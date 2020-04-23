@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script type="text/javascript" src="./dist/js/app.js"></script>
+    <script>
+        window.$ = HTMLElement.prototype.$ = function (selector) {
+            var elems = (this == window ? document : this).querySelectorAll(selector);
+            return elems.length == 0 ? null :
+                elems.length == 1 ? elems[0] :
+                    elems;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>prime-utils</h3>
+        <input type="text" id="func">
+</body>
+<script>
+    //obj
+    let obj1 = {
+        a: '',
+        b: null,
+        c: ' 2',
+        d: [],
+        e: {
+            f: ' 空格 ',
+            g: [null],
+        },
+        h: new Date(),
+        i: ['', ' 空格', null],
+    }
+    console.log($$.objectUtil.delNullAndTrim(obj1))
+
+    let obj2 = {
+        name: 'xiaoming',
+        year: 4,
+    }
+    let str2 = 'https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&ch=&tn=baidu&bar=&wd=webpack+%E6%89%93%E5%8C%85js%E5%BA%93&oq=webpack&rsv_pq=81d7b9e00002331b&rsv_t=543bHNycLZmF%2B6wFTjf9EpilKQ7fL%2BRzJTG3K0IiYVqvMKxviArEqH9Hm3s&rqlang=cn&rsv_enter=1&rsv_btype=t&rsv_dl=tb&inputT=11098'
+    console.log($$.objectUtil.stringfyQueryString(obj2))
+    console.log($$.objectUtil.parseQueryString(str2))
+
+    //time
+    console.log($$.timeUtil.formatPassTime(new Date('2020/3/21 22:30:10')));
+    console.log($$.timeUtil.formatRemainTime(new Date('2020/5/22 22:30:10')));
+    console.log($$.timeUtil.getEndDate(5,2020));
+
+    //dom
+
+    //function
+    let count=0;
+    window.addEventListener('click',$$.functionUtil.throttle(2000,function(){
+        console.log(1);
+    },true));
+
+
+</script>
+
+</html>
