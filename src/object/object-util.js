@@ -11,7 +11,9 @@ export class ObjectUtil extends Utils {
    * @param {*} data 
    */
   trim(data) {
-    return this.encodeStr(data, v => v.trim());
+    return this.encodeData(data, {
+      strfn: (v) => v.trim()
+    });
   }
 
   /**
@@ -19,7 +21,7 @@ export class ObjectUtil extends Utils {
    * @param {*} data 
    */
   delNull(data) {
-    return this.encodeStr(data, null, true);
+    return this.encodeData(data, null, true);
   }
 
   /**
@@ -27,7 +29,9 @@ export class ObjectUtil extends Utils {
    * @param {*} data 
    */
   delNullAndTrim(data) {
-    return this.encodeStr(data, v => v.trim(), true)
+    return this.encodeData(data, {
+      strfn: (v) => v.trim()
+    }, true)
   }
 
   /**
@@ -35,51 +39,65 @@ export class ObjectUtil extends Utils {
    * @param {*} data 
    */
   clone(data) {
-    return this.encodeStr(data, null);
+    return this.encodeData(data);
   }
 
   /**
    * 
-   * @param {克隆的数据} data 
-   * @param {对data中string的操作} fn 
-   * @param {是否删除数据中的undefine null '' []} isDelNull 
+   * @param {any} data 
+   * @param {datefn: '',strfn: '',numfn: ''} callbackobj
+   * @param {boolean} isDelEmptyValue 
    */
-  encodeStr(data, fn, isDelNull = false) {
-    if (this.isDate(data)) {
-      return new Date().setTime(data.getTime());
-    } else if (this.isObject(data)) {
+  encodeData(data, callbackobj = {}, isDelEmptyValue = false) {
+    if(callbackobj == null) callbackobj={}
+
+    if ($$.objectUtil.isDate(data)) {
+      if ($$.objectUtil.isFunction(callbackobj.datefn)) {
+        return callbackobj.datefn(new Date().setTime(data.getTime()));
+      } else {
+        return new Date().setTime(data.getTime());
+      }
+
+    } else if ($$.objectUtil.isObject(data)) {
       let newdata = {};
       let keys = Object.keys(data);
       for (let i = 0; i < keys.length; i++) {
-        let tem = this.encodeStr(data[keys[i]], fn, isDelNull);
-        if (!isDelNull || ((tem != null && tem != ''))) {
+        let tem = this.encodeData(data[keys[i]], callbackobj, isDelEmptyValue);
+        if (!isDelEmptyValue || !$$.objectUtil.isEmptyValue(tem)) {
           newdata[keys[i]] = tem;
         }
         tem = null;
       }
       keys = null;
       return newdata;
-    } else if (this.isArray(data)) {
+    } else if ($$.objectUtil.isArray(data)) {
       let newdata = [];
       for (let i = 0; i < data.length; i++) {
-        let tem = this.encodeStr(data[i], fn, isDelNull);
-        if (!isDelNull || ((tem != null && tem != ''))) {
-          newdata.push(this.encodeStr(data[i], fn, isDelNull));
+        let tem = this.encodeData(data[i], callbackobj, isDelEmptyValue)
+        if (!isDelEmptyValue || !$$.objectUtil.isEmptyValue(tem)) {
+          newdata.push(tem);
         }
+        tem = null
+
       }
       return newdata
     } else if (typeof data == 'string') {
-      if(this.isFunction(fn)){
-        return fn(data);
-      }else{
+      if ($$.objectUtil.isFunction(callbackobj.strfn)) {
+        return callbackobj.strfn(data);
+      } else {
         return data;
       }
-      
+
+    } else if (typeof data == 'number') {
+      if ($$.objectUtil.isFunction(callbackobj.numfn)) {
+        return callbackobj.numfn(data);
+      } else {
+        return data;
+      }
     } else {
       return data;
     }
   }
-  
   /**
    * 序列化对象  对象转url参数
    * @param {*} obj 
@@ -108,9 +126,9 @@ export class ObjectUtil extends Utils {
     url = url == null ? window.location.href : url
     let search = url.substring(url.lastIndexOf('?') + 1)
     if (!search) {
-        return{}
+      return {}
     }
-    return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') +'"}')
+    return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
   }
 
 }
