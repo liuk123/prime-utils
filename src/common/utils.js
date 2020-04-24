@@ -55,19 +55,4 @@ export class Utils {
     }
 
   }
-
-
-  // /**
-  //    * 阻止冒泡事件
-  //    * @param {event} e 
-  //    */
-  // cancelBubble(e) {
-  //   var evt = e ? e : window.event;
-  //   if (evt.stopPropagation) {
-  //     evt.stopPropagation();
-  //   }
-  //   else {
-  //     evt.cancelBubble = true;
-  //   }
-  // }
 }

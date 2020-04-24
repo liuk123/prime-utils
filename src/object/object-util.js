@@ -51,30 +51,30 @@ export class ObjectUtil extends Utils {
   encodeData(data, callbackobj = {}, isDelEmptyValue = false) {
     if(callbackobj == null) callbackobj={}
 
-    if ($$.objectUtil.isDate(data)) {
-      if ($$.objectUtil.isFunction(callbackobj.datefn)) {
+    if (this.isDate(data)) {
+      if (this.isFunction(callbackobj.datefn)) {
         return callbackobj.datefn(new Date().setTime(data.getTime()));
       } else {
         return new Date().setTime(data.getTime());
       }
 
-    } else if ($$.objectUtil.isObject(data)) {
+    } else if (this.isObject(data)) {
       let newdata = {};
       let keys = Object.keys(data);
       for (let i = 0; i < keys.length; i++) {
         let tem = this.encodeData(data[keys[i]], callbackobj, isDelEmptyValue);
-        if (!isDelEmptyValue || !$$.objectUtil.isEmptyValue(tem)) {
+        if (!isDelEmptyValue || !this.isEmptyValue(tem)) {
           newdata[keys[i]] = tem;
         }
         tem = null;
       }
       keys = null;
       return newdata;
-    } else if ($$.objectUtil.isArray(data)) {
+    } else if (this.isArray(data)) {
       let newdata = [];
       for (let i = 0; i < data.length; i++) {
         let tem = this.encodeData(data[i], callbackobj, isDelEmptyValue)
-        if (!isDelEmptyValue || !$$.objectUtil.isEmptyValue(tem)) {
+        if (!isDelEmptyValue || !this.isEmptyValue(tem)) {
           newdata.push(tem);
         }
         tem = null
@@ -82,14 +82,14 @@ export class ObjectUtil extends Utils {
       }
       return newdata
     } else if (typeof data == 'string') {
-      if ($$.objectUtil.isFunction(callbackobj.strfn)) {
+      if (this.isFunction(callbackobj.strfn)) {
         return callbackobj.strfn(data);
       } else {
         return data;
       }
 
     } else if (typeof data == 'number') {
-      if ($$.objectUtil.isFunction(callbackobj.numfn)) {
+      if (this.isFunction(callbackobj.numfn)) {
         return callbackobj.numfn(data);
       } else {
         return data;
