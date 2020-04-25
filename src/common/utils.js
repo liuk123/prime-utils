@@ -35,7 +35,10 @@ export class Utils {
   isBoolean(o) {
     return this.getDataType(o) === 'Boolean';
   }
-
+  
+  isNull(){
+    return this.getDataType(o) === 'Null'||this.getDataType(o) === 'Undefined';
+  }
   
   isEmptyObject(o) {
     for (let key in o) {

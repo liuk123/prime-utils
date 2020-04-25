@@ -9,7 +9,12 @@ export class RegExpUtil {
     };
     //字母，数字、下划线
     this.normalChar = {
-      reg: '_A-Za-z0-9',
+      reg: '^[_A-Za-z0-9]$',
+      msg: '只能包含字母、数字和下划线'
+    };
+    //整数
+    this.integer = {
+      reg: '^\\d+$',
       msg: '只能包含字母、数字和下划线'
     };
     //n位小数的正数
@@ -24,7 +29,12 @@ export class RegExpUtil {
     })
     //1-28号
     this.month28 = {
-      reg: new RegExp('^(?:[1-9]|(1[0-9])?|2[0-8])$'),
+      reg: '^(?:[1-9]|(1[0-9])?|2[0-8])$',
+      msg: '只可输入1-28的数字'
+    };
+    //汉字
+    this.cn = {
+      reg: '[\u4e00-\u9fa5]+',
       msg: '只可输入1-28的数字'
     };
     //邮箱
@@ -143,6 +153,13 @@ export class RegExpUtil {
   isDecimalsNotZero(v,m,n){
     return new RegExp(this.decimalsNotZero(m,n).reg).test(v);
   }
+  //字符长度
+  bytelength(v,min,max){
+    let cnStrLength = v.match(new RegExp(this.cn,gm)).length;
+    let length = v.length + cnStrLength;
+    return min<=length && length<=max
+  }
+
 
 
 }
