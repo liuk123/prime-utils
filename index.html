@@ -50,8 +50,18 @@
     let obj3 = {
         a: 'obj3'
     }
+    let arr1=[
+        {id:1},
+        {id:2},
+        [{id:3,pid:4}],
+        {id:5,pid:6},
+        {id:7,cid:8},
+    ]
 
-    console.log($$.objectUtil.delNullAndTrim(obj1))
+    console.log($$.objectUtil.clone(obj1))
+    console.log($$.objectUtil.rmOneObj(arr1,{a:1,pid:2}))
+    console.log($$.objectUtil.rmSomeObj(arr1,[{id:1},{id:3},{id:5,pid:6}]))
+    console.log('-------------------------------------------------------------')
     console.log(Object.assign({}, obj1, obj2))
     console.log($$.objectUtil.isDate(obj1.bb))
 

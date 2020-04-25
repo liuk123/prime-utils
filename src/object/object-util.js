@@ -21,7 +21,7 @@ export class ObjectUtil extends Utils {
    * @param {*} data 
    */
   delNull(data) {
-    return this.encodeData(data, null, true);
+    return this.encodeData(data, null, (v) => this.isEmptyValue(v));
   }
 
   /**
@@ -31,7 +31,7 @@ export class ObjectUtil extends Utils {
   delNullAndTrim(data) {
     return this.encodeData(data, {
       strfn: (v) => v.trim()
-    }, true)
+    }, (v) => this.isEmptyValue(v))
   }
 
   /**
@@ -43,13 +43,48 @@ export class ObjectUtil extends Utils {
   }
 
   /**
+   * 删除id=1且pid=2的对象
+   * @param {arr} data
+   * @param {id:1,pid:2} obj
+   */
+  rmOneObj(data, obj) {
+    let attr = Object.keys(obj)
+    return this.encodeData(data, null, (v) => {
+      if (this.isObject(v) &&
+        attr.every(val => v[val] == obj[val]
+        )) {
+        return true
+      } else {
+        return false
+      }
+    });
+  }
+  /**
+   * 删除多条
+   * @param {arr} data 
+   * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
+   */
+  rmSomeObj(data, arr) {
+    let attr = arr.map(v => Object.keys(v)) //[[id,pid],[pid]]
+    return this.encodeData(data, null, (v) => {
+      if (this.isObject(v) &&
+        attr.some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+      ) {
+        return true
+      } else {
+        return false
+      }
+    });
+  }
+
+  /**
    * 
    * @param {any} data 
    * @param {datefn: '',strfn: '',numfn: ''} callbackobj
-   * @param {boolean} isDelEmptyValue 
+   * @param {callback} del  return true =>删除 return false=>不删除
    */
-  encodeData(data, callbackobj = {}, isDelEmptyValue = false) {
-    if(callbackobj == null) callbackobj={}
+  encodeData(data, callbackobj = {}, del) {
+    if (callbackobj == null) callbackobj = {}
 
     if (this.isDate(data)) {
       if (this.isFunction(callbackobj.datefn)) {
@@ -62,8 +97,8 @@ export class ObjectUtil extends Utils {
       let newdata = {};
       let keys = Object.keys(data);
       for (let i = 0; i < keys.length; i++) {
-        let tem = this.encodeData(data[keys[i]], callbackobj, isDelEmptyValue);
-        if (!isDelEmptyValue || !this.isEmptyValue(tem)) {
+        let tem = this.encodeData(data[keys[i]], callbackobj, del);
+        if (this.isFunction(del) && !del(tem) || !this.isFunction(del)) {
           newdata[keys[i]] = tem;
         }
         tem = null;
@@ -73,8 +108,8 @@ export class ObjectUtil extends Utils {
     } else if (this.isArray(data)) {
       let newdata = [];
       for (let i = 0; i < data.length; i++) {
-        let tem = this.encodeData(data[i], callbackobj, isDelEmptyValue)
-        if (!isDelEmptyValue || !this.isEmptyValue(tem)) {
+        let tem = this.encodeData(data[i], callbackobj, del)
+        if (this.isFunction(del) && !del(tem) || !this.isFunction(del)) {
           newdata.push(tem);
         }
         tem = null

@@ -36,7 +36,7 @@ export class Utils {
     return this.getDataType(o) === 'Boolean';
   }
   
-  isNull(){
+  isNull(o){
     return this.getDataType(o) === 'Null'||this.getDataType(o) === 'Undefined';
   }
   
