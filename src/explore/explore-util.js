@@ -52,4 +52,8 @@ export class ExploreUtil extends Utils{
 		return !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') == 0;
 	}
 
+	closeWindow(){
+		window.open("about:blank","_self").close()
+	}
+
 }

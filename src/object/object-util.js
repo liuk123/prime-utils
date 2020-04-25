@@ -104,15 +104,15 @@ export class ObjectUtil extends Utils {
 
     } else if (this.isObject(data)) {
       let newdata = {};
-      let keys = Object.keys(data);
-      for (let i = 0; i < keys.length; i++) {
-        let tem = this.encodeData(data[keys[i]], callbackobj, del);
-        if (this.isFunction(del) && !del(tem) || !this.isFunction(del)) {
-          newdata[keys[i]] = tem;
+      for (let key in data) {
+        if (data.hasOwnProperty(key)){
+          let tem = this.encodeData(data[key], callbackobj, del);
+          if (this.isFunction(del) && !del(tem) || !this.isFunction(del)) {
+            newdata[key] = tem;
+          }
+          tem = null;
         }
-        tem = null;
       }
-      keys = null;
       return newdata;
     } else if (this.isArray(data)) {
       let newdata = [];
