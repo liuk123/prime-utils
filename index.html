@@ -62,10 +62,10 @@
     console.log($$.objectUtil.clone(obj1))
     console.log($$.objectUtil.rmOneObj(arr1,{a:1,pid:2}))
     console.log($$.objectUtil.rmSomeObj(arr1,[{id:1},{id:3},{id:5,pid:6}]))
-    console.log('-------------------------------------------------------------')
+    
     console.log(Object.assign({}, obj1, obj2))
     console.log($$.objectUtil.isDate(obj1.bb))
-
+    console.log('克隆-------------------------------------------------------------')
     let str2 = 'https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&ch=&tn=baidu&bar=&wd=webpack+%E6%89%93%E5%8C%85js%E5%BA%93&oq=webpack&rsv_pq=81d7b9e00002331b&rsv_t=543bHNycLZmF%2B6wFTjf9EpilKQ7fL%2BRzJTG3K0IiYVqvMKxviArEqH9Hm3s&rqlang=cn&rsv_enter=1&rsv_btype=t&rsv_dl=tb&inputT=11098'
     console.log($$.objectUtil.stringfyQueryString(obj2))
     console.log($$.objectUtil.parseQueryString(str2))
@@ -74,6 +74,7 @@
     console.log($$.timeUtil.formatPassTime(new Date('2020/3/21 22:30:10')));
     console.log($$.timeUtil.formatRemainTime(new Date('2020/5/22 22:30:10')));
     console.log($$.timeUtil.getEndDate(5, 2020));
+    console.log('时间-------------------------------------------------------------')
 
     //dom
 
@@ -82,10 +83,8 @@
     window.addEventListener('click', $$.functionUtil.throttle(2000, function () {
         console.log(1);
     }, true));
-
-    //regexp
-    // console.log($$.regExpUtil.isDecimals('12.333', 3))
-
+    console.log('函数-------------------------------------------------------------')
+    
     //继承
     function clone(origin) {
         let originProto = Object.getPrototypeOf(origin);
@@ -97,21 +96,17 @@
     console.log(obj2)
     console.log(obj3)
 
-    console.log("================")
-
-    let o1 = clone(obj3);
+    let o1 = $$.objectUtil.cloneObj(obj3)
     let o2 = $$.objectUtil.clone(obj3)
-    console.log(o1)
-    obj1.a = 444;
-    obj2.a = 444;
-    obj3.a = 444;
-    console.log(o1)
-    console.log(o2)
+    console.log('继承-------------------------------------------------------------')
 
     console.log($$.objectUtil.isEmptyValue([1]))
     console.log($$.objectUtil.isEmptyObject({id:1}))
 
-
+    console.log('校验-------------------------------------------------------------')
+    //regexp bytelength
+    console.log($$.regExpUtil.isDecimalsNotZero('12333.211',5,3))
+    console.log($$.regExpUtil.bytelength('我1aB',6,8))
 </script>
 
 </html>
