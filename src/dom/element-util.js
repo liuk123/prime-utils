@@ -1,7 +1,9 @@
+import { Utils } from "../common/utils";
 
-export class ElementUtil {
+export class ElementUtil extends Utils{
 
   constructor() {
+    super();
     this.requestAnimFrame = (
       function () {
         return window.requestAnimationFrame ||

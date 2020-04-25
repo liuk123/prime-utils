@@ -1,6 +1,9 @@
+import { Utils } from "../common/utils";
 
-export class ExploreUtil {
-	constructor() { }
+export class ExploreUtil extends Utils{
+	constructor() {
+		super();
+	}
 
 	/**
 	 * 获取浏览器名称

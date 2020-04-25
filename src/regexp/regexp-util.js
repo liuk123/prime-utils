@@ -1,7 +1,9 @@
+import { Utils } from "../common/utils";
 
-export class RegExpUtil {
+export class RegExpUtil extends Utils {
 
   constructor() {
+    super();
     //特殊字符
     this.specialChar = {
       reg: '[\`\~\!\@\#\$\%\^\&\*\(\)\=\+\;\:\'\"\\\|\,<\.\>\/\?\[\]\{\}]',

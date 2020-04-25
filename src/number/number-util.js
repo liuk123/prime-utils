@@ -1,9 +1,10 @@
+import { Utils } from "../common/utils";
 
 
 
-export class NumberUtil {
+export class NumberUtil extends Utils {
   constructor() {
-
+    super();
   }
 
   /**

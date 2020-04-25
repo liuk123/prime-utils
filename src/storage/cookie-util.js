@@ -1,6 +1,9 @@
+import { Utils } from "../common/utils";
 
-export class CookieUtil {
-  constructor() { }
+export class CookieUtil  extends Utils{
+  constructor() {
+    super();
+  }
 
   /**
    * 获取cookie

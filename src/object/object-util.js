@@ -43,6 +43,15 @@ export class ObjectUtil extends Utils {
   }
 
   /**
+   * 克隆object 继承原来的原型链
+   * @param {*} data 
+   */
+  cloneObj(data) {
+    let originProto = Object.getPrototypeOf(data);
+    return Object.assign(Object.create(originProto), data);
+  }
+
+  /**
    * 删除id=1且pid=2的对象
    * @param {arr} data
    * @param {id:1,pid:2} obj
@@ -65,7 +74,7 @@ export class ObjectUtil extends Utils {
    * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
    */
   rmSomeObj(data, arr) {
-    let attr = arr.map(v => Object.keys(v)) //[[id,pid],[pid]]
+    let attr = arr.map(v => Object.keys(v))
     return this.encodeData(data, null, (v) => {
       if (this.isObject(v) &&
         attr.some((val, i) => val.every(subval => v[subval] == arr[i][subval]))

@@ -1,6 +1,9 @@
+import { Utils } from "../common/utils";
 
-export class TimeUtil {
-  constructor() { }
+export class TimeUtil extends Utils{
+  constructor() {
+    super();
+  }
 
   /**
    * 距离现在的时间

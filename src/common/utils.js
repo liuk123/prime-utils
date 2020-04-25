@@ -35,9 +35,15 @@ export class Utils {
   isBoolean(o) {
     return this.getDataType(o) === 'Boolean';
   }
-  
+
   isNull(o){
-    return this.getDataType(o) === 'Null'||this.getDataType(o) === 'Undefined';
+    return this.getDataType(o) === 'Null';
+  }
+  isUndefind(o){
+    return this.getDataType(o) === 'Undefined';
+  }
+  isNullOrUndefined(o){
+    return this.isNull(o)||this.isUndefind(o);
   }
   
   isEmptyObject(o) {
@@ -51,7 +57,7 @@ export class Utils {
       this.isArray(o) && o.length == 0 ||
       this.isString(o) && o === '' ||
       this.isNaN(o) ||
-      o == null) {
+      this.isNullOrUndefined(o)) {
       return true
     } else {
       return false
