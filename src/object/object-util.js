@@ -88,7 +88,7 @@ export class ObjectUtil extends Utils {
   }
 
   /**
-   * 删除一条(浅克隆)
+   * 删除一条(修改原数组)
    * @param {arr} data
    * @param {id:1,pid:2} obj
    */
@@ -104,8 +104,9 @@ export class ObjectUtil extends Utils {
       }
     },(v,i)=>v.splice(i, 1));
   }
+
   /**
-   * 删除多条 (浅克隆)
+   * 删除多条 (修改原数组)
    * @param {arr} data 
    * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
    */
@@ -147,6 +148,7 @@ export class ObjectUtil extends Utils {
   addSomeObj(data, arr, newData) {
     let attr = arr.map(v => Object.keys(v))
     return this.lightCloneAndDelFromArr(data, (v) => {
+      //v,子元素
       if (this.isObject(v) &&
         attr.some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
       ) {
@@ -154,13 +156,13 @@ export class ObjectUtil extends Utils {
       } else {
         return false
       }
-    },(v,i)=>newData.forEach(val=> v.push(val)));
+    },(v,i)=>newData.forEach(val=> v.push(val)));//v，父元素
   }
   
 
 
   /**
-   * 浅克隆
+   * 数组递归修改
    * @param {*} data 
    * @param {*} callback 
    */
@@ -173,11 +175,8 @@ export class ObjectUtil extends Utils {
       for (let i = 0; i < data.length; i++) {
         if (callback(data[i])) {
           deal(data,i)
-          this.lightCloneAndDelFromArr(data[i], callback, deal)
-        } else {
-          this.lightCloneAndDelFromArr(data[i], callback, deal)
         }
-
+        this.lightCloneAndDelFromArr(data[i], callback, deal)
       }
     }
   }
