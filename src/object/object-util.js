@@ -52,7 +52,7 @@ export class ObjectUtil extends Utils {
   }
 
   /**
-   * 删除id=1且pid=2的对象
+   * 删除一条
    * @param {arr} data
    * @param {id:1,pid:2} obj
    */
@@ -68,6 +68,7 @@ export class ObjectUtil extends Utils {
       }
     });
   }
+
   /**
    * 删除多条
    * @param {arr} data 
@@ -84,6 +85,101 @@ export class ObjectUtil extends Utils {
         return false
       }
     });
+  }
+
+  /**
+   * 删除一条(浅克隆)
+   * @param {arr} data
+   * @param {id:1,pid:2} obj
+   */
+  removeOneObj(data, obj) {
+    let attr = Object.keys(obj)
+    return this.lightCloneAndDelFromArr(data, (v) => {
+      if (this.isObject(v) &&
+        attr.every(val => v[val] == obj[val]
+        )) {
+        return true
+      } else {
+        return false
+      }
+    },(v,i)=>v.splice(i, 1));
+  }
+  /**
+   * 删除多条 (浅克隆)
+   * @param {arr} data 
+   * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
+   */
+  removeSomeObj(data, arr) {
+    let attr = arr.map(v => Object.keys(v))
+    return this.lightCloneAndDelFromArr(data, (v) => {
+      if (this.isObject(v) &&
+        attr.some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+      ) {
+        return true
+      } else {
+        return false
+      }
+    },(v,i)=>v.splice(i, 1));
+  }
+  
+  /**
+   * 添加一条
+   * @param {*} data 
+   * @param {*} arr 
+   */
+  addOneObj(data, arr, newData) {
+    let attr = arr.map(v => Object.keys(v))
+    return this.lightCloneAndDelFromArr(data, (v) => {
+      if (this.isObject(v) &&
+      attr.every(val => v[val] == obj[val])
+      ) {
+        return true
+      } else {
+        return false
+      }
+    },(v,i)=>v.push(newData));
+  }
+  /**
+   * 添加多条
+   * @param {*} data 
+   * @param {*} arr 
+   */
+  addSomeObj(data, arr, newData) {
+    let attr = arr.map(v => Object.keys(v))
+    return this.lightCloneAndDelFromArr(data, (v) => {
+      if (this.isObject(v) &&
+        attr.some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+      ) {
+        return true
+      } else {
+        return false
+      }
+    },(v,i)=>newData.forEach(val=> v.push(val)));
+  }
+  
+
+
+  /**
+   * 浅克隆
+   * @param {*} data 
+   * @param {*} callback 
+   */
+  lightCloneAndDelFromArr(data, callback, deal) {
+    if ($$.objectUtil.isObject(data)) {
+      for (let key in data) {
+        this.lightCloneAndDelFromArr(data[key], callback, deal);
+      }
+    } else if ($$.objectUtil.isArray(data)) {
+      for (let i = 0; i < data.length; i++) {
+        if (callback(data[i])) {
+          deal(data,i)
+          this.lightCloneAndDelFromArr(data[i], callback, deal)
+        } else {
+          this.lightCloneAndDelFromArr(data[i], callback, deal)
+        }
+
+      }
+    }
   }
 
   /**
@@ -105,7 +201,7 @@ export class ObjectUtil extends Utils {
     } else if (this.isObject(data)) {
       let newdata = {};
       for (let key in data) {
-        if (data.hasOwnProperty(key)){
+        if (data.hasOwnProperty(key)) {
           let tem = this.encodeData(data[key], callbackobj, del);
           if (this.isFunction(del) && !del(tem) || !this.isFunction(del)) {
             newdata[key] = tem;
