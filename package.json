@@ -2,7 +2,7 @@
   "name": "prime-utils.js",
   "version": "1.0.0",
   "description": "js工具包 数据处理，校验处理，时间处理",
-  "main": "index.js",
+  "main": "js/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack -p --config webpack.conf.js --mode development --progress --colors",

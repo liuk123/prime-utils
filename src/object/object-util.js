@@ -142,6 +142,61 @@ export class ObjectUtil extends Utils {
       return data;
     }
   }
+
+  /**
+   * 
+   * @param {*} data 
+   * @param {*} callbackobj 
+   * @param {*} del 
+   */
+  encodeLightData(data, callbackobj = {}, del) {
+    if (callbackobj == null) callbackobj = {}
+
+    if (this.isDate(data)) {
+      if (this.isFunction(callbackobj.datefn)) {
+        return callbackobj.datefn(data);
+      } else {
+        return data;
+      }
+
+    } else if (this.isObject(data)) {
+      for (let key in data) {
+        if (data.hasOwnProperty(key)){
+          this.encodeData(data[key], callbackobj, del);
+          if (this.isFunction(del) && !del(tem) || !this.isFunction(del)) {
+            
+          }
+          tem = null;
+        }
+      }
+    } else if (this.isArray(data)) {
+      let newdata = [];
+      for (let i = 0; i < data.length; i++) {
+        let tem = this.encodeData(data[i], callbackobj, del)
+        if (this.isFunction(del) && !del(tem) || !this.isFunction(del)) {
+          newdata.push(tem);
+        }
+        tem = null
+
+      }
+      return newdata
+    } else if (typeof data == 'string') {
+      if (this.isFunction(callbackobj.strfn)) {
+        return callbackobj.strfn(data);
+      } else {
+        return data;
+      }
+
+    } else if (typeof data == 'number') {
+      if (this.isFunction(callbackobj.numfn)) {
+        return callbackobj.numfn(data);
+      } else {
+        return data;
+      }
+    } else {
+      return data;
+    }
+  }
   /**
    * 序列化对象  对象转url参数
    * @param {*} obj 
