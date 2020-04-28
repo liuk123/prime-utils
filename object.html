@@ -23,69 +23,113 @@
         <input type="text" id="func">
 </body>
 <script>
-    let arr=[{
-        id:1,
+    let arr = [{
+        id: 1,
         name: '视频',
         number: 30,
         children: [
-            {id:12,name:'youku',number:20,},
-            {id:13,name:'爱奇艺',number:30,},
-            {id:14,name:'腾讯视频',number:10,},
+            { id: 12, name: 'youku', number: 20, },
+            { id: 13, name: '爱奇艺', number: 30, },
+            { id: 14, name: '腾讯视频', number: 10, },
 
         ],
-    },{
-        id:2,
-        name:'音乐',
-        numner: 20,
-        children:[
-            {id:22,name:'qq',number:15},
-            {id:23,name:'网易',number:20},
-            {id:24,name:'虾米',number:25,children:[
-                {id:12,name:'平凡之路',number:1},
-                {id:13,name:'千里之外',number:2},
-                {id:14,name:'菊花台',number:3},
-                {id:15,name:'菊花台',number:4},
-            ]},
+    }, {
+        id: 2,
+        name: '音乐',
+        number: 20,
+        children: [
+            { id: 22, name: 'qq', number: 15 },
+            { id: 23, name: '网易', number: 20 },
+            {
+                id: 24, name: '虾米', number: 25, children: [
+                    { id: 12, name: '平凡之路', number: 1 },
+                    { id: 13, name: '千里之外', number: 2 },
+                    { id: 14, name: '菊花台', number: 3 },
+                    { id: 15, name: '菊花台', number: 4 },
+                ]
+            },
         ]
 
     }]
 
-    let obj={
-        id:2,
-        name:'音乐',
-        numner: 20,
-        children:[
-            {id:22,name:'qq',number:15},
-            {id:23,name:'网易',number:20},
-            {id:24,name:'虾米',number:25,children:[
-                {id:12,name:'平凡之路',number:1},
-                {id:13,name:'千里之外',number:2},
-                {id:14,name:'菊花台',number:3},
-                {id:15,name:'菊花台',number:4},
-            ]},
+    let obj = {
+        id: 2,
+        name: '音乐',
+        number: 20,
+        children: [
+            { id: 22, name: 'qq', number: 15 },
+            { id: 23, name: '网易', number: 20 },
+            {
+                id: 24, name: '虾米', number: 25, children: [
+                    { id: 12, name: '平凡之路', number: 1 },
+                    { id: 13, name: '千里之外', number: 2 },
+                    { id: 14, name: '菊花台', number: 3 },
+                    { id: 15, name: '菊花台', number: 4 },
+                ]
+            },
         ]
     }
 
-    console.log($$.objectUtil.rmOneObj(obj,{id:12,number:1}));
+    // console.log($$.objectUtil.rmOneObj(obj, { id: 12, number: 1 }));
     // console.log($$.objectUtil.rmSomeObj(arr,[{id:12,number:1},{id:13}]));
     // console.log($$.objectUtil.removeOneObj(arr,{id:12,number:1}))
     // console.log($$.objectUtil.removeSomeObj(arr,[{id:12,number:1},{id:13}]))
 
     // console.log($$.objectUtil.addOneObj(arr,{id:12,number:20},{id:123}))
     // console.log($$.objectUtil.addSomeObj(arr,{id:12,number:1},[{id:222},{id:223},{id:224}]))
-    arr = $$.objectUtil.operatArr(arr,{id:12,number:1},(v,i)=>{
-        // v:父元素，v[i]:需要获取的元素
+    // arr = $$.objectUtil.operatArr(arr, { id: 12, number: 1 }, (v, i) => {
+    //     // v:父元素，v[i]:需要获取的元素
 
-        //修改
-        // v[i] ={id:'1改',name:"修改"}
-        // Object.assign(v[i],{id:'1改',name:"修改"})
+    //     //修改
+    //     // v[i] ={id:'1改',name:"修改"}
+    //     // Object.assign(v[i],{id:'1改',name:"修改"})
 
-        //添加
-        // v.unshift({id:'1改',name:"修改"})
-        // v.push({id:'1改',name:"修改"});
-    })
-    console.log(arr)
-    
+    //     //添加
+    //     // v.unshift({id:'1改',name:"修改"})
+    //     // v.push({id:'1改',name:"修改"});
+    // })
+    // console.log(arr)
+
+
+    let obj5 = {
+        children: 'list',
+        number:'count',
+        name:123
+    }
+
+
+    console.log($$.objectUtil.replaceObjKey(arr,obj5));
+
+</script>
+<script>
+    // function changeObjKey(data, obj) {
+
+    //     if ($$.objectUtil.isObject(data)) {
+    //         let newdata = {};
+    //         for (let key in data) {
+    //             if (data.hasOwnProperty(key)) {
+                    
+    //                 if (!$$.objectUtil.isBlank(obj[key])) {
+    //                     newdata[obj[key]] = this.changeObjKey(data[obj[key]], obj);
+    //                 } else {
+    //                     newdata[key] = this.changeObjKey(data[key], obj);
+    //                 }
+
+    //             }
+    //         }
+    //         return newdata;
+    //     } else if ($$.objectUtil.isArray(data)) {
+    //         let newdata = [];
+    //         for (let i = 0; i < data.length; i++) {
+    //             newdata.push(this.changeObjKey(data[i], obj));
+    //         }
+    //         return newdata;
+    //     } else {
+    //         return data;
+    //     }
+    // }
+    // console.log(changeObjKey(arr,obj5));
+
 </script>
 
 </html>

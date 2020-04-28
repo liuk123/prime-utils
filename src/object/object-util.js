@@ -144,7 +144,7 @@ export class ObjectUtil extends Utils {
    * @param {*} obj 
    */
   addSomeObj(data, obj, newData) {
-     this.lightCloneAndDelFromArr(data, (v) => {
+    this.lightCloneAndDelFromArr(data, (v) => {
       //v,子元素
       if (this.isObject(v) &&
         Object.keys(obj).every(val => v[val] == obj[val])
@@ -163,7 +163,7 @@ export class ObjectUtil extends Utils {
    * @param {*} obj 
    * @param {*} fn 
    */
-  operatArr(data,obj,fn){
+  operatArr(data, obj, fn) {
     this.lightCloneAndDelFromArr(data, (v) => {
       //v,子元素
       if (this.isObject(v) &&
@@ -173,7 +173,7 @@ export class ObjectUtil extends Utils {
       } else {
         return false
       }
-    }, (v, i) => fn(v,i));//v，父元素
+    }, (v, i) => fn(v, i));//v，父元素
     return data;
   }
 
@@ -184,11 +184,11 @@ export class ObjectUtil extends Utils {
    * @param {*} callback
    */
   lightCloneAndDelFromArr(data, callback, deal) {
-    if ($$.objectUtil.isObject(data)) {
+    if (this.isObject(data)) {
       for (let key in data) {
         this.lightCloneAndDelFromArr(data[key], callback, deal);
       }
-    } else if ($$.objectUtil.isArray(data)) {
+    } else if (this.isArray(data)) {
       for (let i = 0; i < data.length; i++) {
         if (callback(data[i])) {
           deal(data, i)
@@ -199,7 +199,7 @@ export class ObjectUtil extends Utils {
     }
   }
 
-  
+
   /**
    * 
    * @param {any} data 
@@ -257,6 +257,36 @@ export class ObjectUtil extends Utils {
     }
   }
 
+  /**
+   * 对象替换key
+   * @param {*} data 
+   * @param {*} obj 
+   */
+  replaceObjKey(data, obj) {
+
+    if (this.isObject(data)) {
+      let newdata = {};
+      for (let key in data) {
+        if (data.hasOwnProperty(key)) {
+          if (!this.isBlank(obj[key])) {
+            newdata[obj[key]] = this.replaceObjKey(data[key], obj);
+          } else {
+            newdata[key] = this.replaceObjKey(data[key], obj);
+          }
+
+        }
+      }
+      return newdata;
+    } else if (this.isArray(data)) {
+      let newdata = [];
+      for (let i = 0; i < data.length; i++) {
+        newdata.push(this.replaceObjKey(data[i], obj));
+      }
+      return newdata;
+    } else {
+      return data;
+    }
+  }
   /**
    * 序列化对象  对象转url参数
    * @param {*} obj 

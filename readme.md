@@ -88,6 +88,14 @@ $$.objectUtil.operatArr(arr, {id:12,number:1}, (v,i)=>{
 //平铺数组
 //eg: [1,2,[3,[4,5]]]=>[1,2,3,4,5]
 let newArr = $$.objectUtil.deepFlatten(arr);
+
+//对象或数组中的对象更换key
+//原数组中的children换成list，number换成count
+let obj5 = {
+        children: 'list',
+        number:'count',
+    }
+$$.objectUtil.replaceObjKey(arr,obj);
 ```
 
 4. 对象序列化与反序列化

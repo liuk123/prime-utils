@@ -68,6 +68,8 @@ export class Utils {
   isBlank(val){
     if(val == null || val == ""){
         return true;
+    }else{
+      return false;
     }
   }
 }
