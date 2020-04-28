@@ -70,25 +70,25 @@
         ]
     }
 
-    // console.log($$.objectUtil.rmOneObj(obj, { id: 12, number: 1 }));
-    // console.log($$.objectUtil.rmSomeObj(arr,[{id:12,number:1},{id:13}]));
-    // console.log($$.objectUtil.removeOneObj(arr,{id:12,number:1}))
-    // console.log($$.objectUtil.removeSomeObj(arr,[{id:12,number:1},{id:13}]))
+    console.log($$.objectUtil.rmOneObj(obj, { id: 12, number: 1 }));
+    console.log($$.objectUtil.rmSomeObj(arr,[{id:12,number:1},{id:13}]));
+    console.log($$.objectUtil.removeOneObj(arr,{id:12,number:1}))
+    console.log($$.objectUtil.removeSomeObj(arr,[{id:12,number:1},{id:13}]))
 
-    // console.log($$.objectUtil.addOneObj(arr,{id:12,number:20},{id:123}))
-    // console.log($$.objectUtil.addSomeObj(arr,{id:12,number:1},[{id:222},{id:223},{id:224}]))
-    // arr = $$.objectUtil.operatArr(arr, { id: 12, number: 1 }, (v, i) => {
-    //     // v:父元素，v[i]:需要获取的元素
+    console.log($$.objectUtil.addOneObj(arr,{id:12,number:20},{id:123}))
+    console.log($$.objectUtil.addSomeObj(arr,{id:12,number:1},[{id:222},{id:223},{id:224}]))
+    arr = $$.objectUtil.operatArr(arr, { id: 12, number: 1 }, (v, i) => {
+        // v:父元素，v[i]:需要获取的元素
 
-    //     //修改
-    //     // v[i] ={id:'1改',name:"修改"}
-    //     // Object.assign(v[i],{id:'1改',name:"修改"})
+        //修改
+        // v[i] ={id:'1改',name:"修改"}
+        // Object.assign(v[i],{id:'1改',name:"修改"})
 
-    //     //添加
-    //     // v.unshift({id:'1改',name:"修改"})
-    //     // v.push({id:'1改',name:"修改"});
-    // })
-    // console.log(arr)
+        //添加
+        // v.unshift({id:'1改',name:"修改"})
+        // v.push({id:'1改',name:"修改"});
+    })
+    console.log(arr)
 
 
     let obj5 = {
@@ -99,36 +99,7 @@
 
 
     console.log($$.objectUtil.replaceObjKey(arr,obj5));
-
-</script>
-<script>
-    // function changeObjKey(data, obj) {
-
-    //     if ($$.objectUtil.isObject(data)) {
-    //         let newdata = {};
-    //         for (let key in data) {
-    //             if (data.hasOwnProperty(key)) {
-                    
-    //                 if (!$$.objectUtil.isBlank(obj[key])) {
-    //                     newdata[obj[key]] = this.changeObjKey(data[obj[key]], obj);
-    //                 } else {
-    //                     newdata[key] = this.changeObjKey(data[key], obj);
-    //                 }
-
-    //             }
-    //         }
-    //         return newdata;
-    //     } else if ($$.objectUtil.isArray(data)) {
-    //         let newdata = [];
-    //         for (let i = 0; i < data.length; i++) {
-    //             newdata.push(this.changeObjKey(data[i], obj));
-    //         }
-    //         return newdata;
-    //     } else {
-    //         return data;
-    //     }
-    // }
-    // console.log(changeObjKey(arr,obj5));
+    console.log(arr)
 
 </script>
 
