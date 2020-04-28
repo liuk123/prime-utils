@@ -57,11 +57,10 @@ export class ObjectUtil extends Utils {
    * @param {id:1,pid:2} obj
    */
   rmOneObj(data, obj) {
-    let attr = Object.keys(obj)
     return this.encodeData(data, null, (v) => {
       if (this.isObject(v) &&
-        attr.every(val => v[val] == obj[val]
-        )) {
+        Object.keys(obj).every(val => v[val] == obj[val])
+      ) {
         return true
       } else {
         return false
@@ -75,10 +74,9 @@ export class ObjectUtil extends Utils {
    * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
    */
   rmSomeObj(data, arr) {
-    let attr = arr.map(v => Object.keys(v))
     return this.encodeData(data, null, (v) => {
       if (this.isObject(v) &&
-        attr.some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+        arr.map(v => Object.keys(v)).some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
       ) {
         return true
       } else {
@@ -93,16 +91,15 @@ export class ObjectUtil extends Utils {
    * @param {id:1,pid:2} obj
    */
   removeOneObj(data, obj) {
-    let attr = Object.keys(obj)
     return this.lightCloneAndDelFromArr(data, (v) => {
       if (this.isObject(v) &&
-        attr.every(val => v[val] == obj[val]
-        )) {
+        Object.keys(obj).every(val => v[val] == obj[val])
+      ) {
         return true
       } else {
         return false
       }
-    },(v,i)=>v.splice(i, 1));
+    }, (v, i) => v.splice(i, 1));
   }
 
   /**
@@ -111,34 +108,32 @@ export class ObjectUtil extends Utils {
    * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
    */
   removeSomeObj(data, arr) {
-    let attr = arr.map(v => Object.keys(v))
     return this.lightCloneAndDelFromArr(data, (v) => {
       if (this.isObject(v) &&
-        attr.some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+        arr.map(v => Object.keys(v)).some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
       ) {
         return true
       } else {
         return false
       }
-    },(v,i)=>v.splice(i, 1));
+    }, (v, i) => v.splice(i, 1));
   }
-  
+
   /**
    * 添加一条
    * @param {*} data 
    * @param {*} arr 
    */
   addOneObj(data, arr, newData) {
-    let attr = arr.map(v => Object.keys(v))
     return this.lightCloneAndDelFromArr(data, (v) => {
       if (this.isObject(v) &&
-      attr.every(val => v[val] == obj[val])
+        arr.map(v => Object.keys(v)).every(val => v[val] == obj[val])
       ) {
         return true
       } else {
         return false
       }
-    },(v,i)=>v.push(newData));
+    }, (v, i) => v.push(newData));
   }
   /**
    * 添加多条
@@ -146,19 +141,18 @@ export class ObjectUtil extends Utils {
    * @param {*} arr 
    */
   addSomeObj(data, arr, newData) {
-    let attr = arr.map(v => Object.keys(v))
     return this.lightCloneAndDelFromArr(data, (v) => {
       //v,子元素
       if (this.isObject(v) &&
-        attr.some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+        arr.map(v => Object.keys(v)).some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
       ) {
         return true
       } else {
         return false
       }
-    },(v,i)=>newData.forEach(val=> v.push(val)));//v，父元素
+    }, (v, i) => newData.forEach(val => v.push(val)));//v，父元素
   }
-  
+
 
 
   /**
@@ -174,7 +168,8 @@ export class ObjectUtil extends Utils {
     } else if ($$.objectUtil.isArray(data)) {
       for (let i = 0; i < data.length; i++) {
         if (callback(data[i])) {
-          deal(data,i)
+          deal(data, i)
+          break;
         }
         this.lightCloneAndDelFromArr(data[i], callback, deal)
       }
@@ -274,7 +269,7 @@ export class ObjectUtil extends Utils {
    * 平铺数组
    * @param {*} arr 
    */
-  deepFlatten(arr){
+  deepFlatten(arr) {
     return arr.reduce((a, v) => a.concat(Array.isArray(v) ? deepFlatten(v) : v), []);
   }
 
@@ -282,7 +277,7 @@ export class ObjectUtil extends Utils {
    * 去掉数组中相同的元素 filterNonUnique([1,2,2,3,4,4,5]) -> [1,3,5]
    * @param {*} arr 
    */
-  filterNonUnique(arr){
+  filterNonUnique(arr) {
     return arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i))
   }
 
@@ -290,8 +285,8 @@ export class ObjectUtil extends Utils {
    * 打乱数组排序
    * @param {} arr 
    */
-  shuffle(arr){
+  shuffle(arr) {
     return arr.sort(() => Math.random() - 0.5)
   }
-  
+
 }
