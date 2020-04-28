@@ -1,6 +1,7 @@
 export class Utils {
 
-  constructor() { }
+  constructor() {
+  }
 
   getDataType(o) {
     return Object.prototype.toString.call(o).slice(8, -1);

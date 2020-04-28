@@ -152,7 +152,4 @@ export class RegExpUtil extends Utils {
     return min<=length && length<=max
   }
 
-
-
 }
-
