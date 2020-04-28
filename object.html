@@ -19,63 +19,73 @@
 </head>
 
 <body>
-    <h1>prime-utils</h3>
+    <h1>object-utils</h3>
         <input type="text" id="func">
 </body>
 <script>
-    //obj
-    let obj1 = {
-        a: 'obj1',
-        aa: '',
-        b: new Date(),
-        bb: null,
-        bbb: undefined,
-        c: ' 2',
-        cc: ' ',
-        d: [],
-        dd: {},
-        e: {
-            f: ' 空格 ',
-            g: [null, '', {id:null}],
-            gg: { id: [' 2',' '] },
-            ggg: { id: [{}] }
-        },
-        h: new Date(),
-        i: ['', ' 空格', null, {}, { id: 1, ps: '' },"liu kai "],
-    }
-    let obj2 = {
-        a: 'obj2',
-        name: 'xiaoming',
-        year: 4,
-    }
-    let obj3 = {
-        a: 'obj3'
-    }
-    let arr=[{id:1},{id:3},{id:5,pid:6}]
-    let arr1=[
-        {id:1},
-        {id:2},
-        [{id:3,pid:4}],
-        {id:5,pid:6},
-        {id:7,cid:8},
-        {id:9,cid:[
-            {id:10,}
-        ]},
-    ]
+    let arr=[{
+        id:1,
+        name: '视频',
+        number: 30,
+        children: [
+            {id:12,name:'youku',number:20,},
+            {id:13,name:'爱奇艺',number:30,},
+            {id:14,name:'腾讯视频',number:10,},
 
-    console.log($$.objectUtil.clone(obj1))
-    console.log($$.objectUtil.rmOneObj(arr1,{a:1,pid:2}))
-    console.log($$.objectUtil.rmSomeObj(arr1,arr))
-    console.log(Object.assign({}, obj1, obj2))
-    console.log($$.objectUtil.isDate(obj1.bb))
-    console.log('克隆-------------------------------------------------------------')
-    let str2 = 'https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&ch=&tn=baidu&bar=&wd=webpack+%E6%89%93%E5%8C%85js%E5%BA%93&oq=webpack&rsv_pq=81d7b9e00002331b&rsv_t=543bHNycLZmF%2B6wFTjf9EpilKQ7fL%2BRzJTG3K0IiYVqvMKxviArEqH9Hm3s&rqlang=cn&rsv_enter=1&rsv_btype=t&rsv_dl=tb&inputT=11098'
-    console.log($$.objectUtil.stringfyQueryString(obj2))
-    console.log($$.objectUtil.parseQueryString(str2))
+        ],
+    },{
+        id:2,
+        name:'音乐',
+        numner: 20,
+        children:[
+            {id:22,name:'qq',number:15},
+            {id:23,name:'网易',number:20},
+            {id:24,name:'虾米',number:25,children:[
+                {id:12,name:'平凡之路',number:1},
+                {id:13,name:'千里之外',number:2},
+                {id:14,name:'菊花台',number:3},
+                {id:15,name:'菊花台',number:4},
+            ]},
+        ]
 
-    // $$.objectUtil.removeSomeObj(arr1,arr)
-    $$.objectUtil.addSomeObj(arr1,[{id:1}],[{id:'aa'}])
-    console.log(arr1);
+    }]
+
+    let obj={
+        id:2,
+        name:'音乐',
+        numner: 20,
+        children:[
+            {id:22,name:'qq',number:15},
+            {id:23,name:'网易',number:20},
+            {id:24,name:'虾米',number:25,children:[
+                {id:12,name:'平凡之路',number:1},
+                {id:13,name:'千里之外',number:2},
+                {id:14,name:'菊花台',number:3},
+                {id:15,name:'菊花台',number:4},
+            ]},
+        ]
+    }
+
+    console.log($$.objectUtil.rmOneObj(obj,{id:12,number:1}));
+    // console.log($$.objectUtil.rmSomeObj(arr,[{id:12,number:1},{id:13}]));
+    // console.log($$.objectUtil.removeOneObj(arr,{id:12,number:1}))
+    // console.log($$.objectUtil.removeSomeObj(arr,[{id:12,number:1},{id:13}]))
+
+    // console.log($$.objectUtil.addOneObj(arr,{id:12,number:20},{id:123}))
+    // console.log($$.objectUtil.addSomeObj(arr,{id:12,number:1},[{id:222},{id:223},{id:224}]))
+    arr = $$.objectUtil.operatArr(arr,{id:12,number:1},(v,i)=>{
+        // v:父元素，v[i]:需要获取的元素
+
+        //修改
+        // v[i] ={id:'1改',name:"修改"}
+        // Object.assign(v[i],{id:'1改',name:"修改"})
+
+        //添加
+        // v.unshift({id:'1改',name:"修改"})
+        // v.push({id:'1改',name:"修改"});
+    })
+    console.log(arr)
+    
 </script>
 
 </html>

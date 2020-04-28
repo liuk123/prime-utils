@@ -91,7 +91,7 @@ export class ObjectUtil extends Utils {
    * @param {id:1,pid:2} obj
    */
   removeOneObj(data, obj) {
-    return this.lightCloneAndDelFromArr(data, (v) => {
+    this.lightCloneAndDelFromArr(data, (v) => {
       if (this.isObject(v) &&
         Object.keys(obj).every(val => v[val] == obj[val])
       ) {
@@ -100,6 +100,7 @@ export class ObjectUtil extends Utils {
         return false
       }
     }, (v, i) => v.splice(i, 1));
+    return data;
   }
 
   /**
@@ -108,7 +109,7 @@ export class ObjectUtil extends Utils {
    * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
    */
   removeSomeObj(data, arr) {
-    return this.lightCloneAndDelFromArr(data, (v) => {
+    this.lightCloneAndDelFromArr(data, (v) => {
       if (this.isObject(v) &&
         arr.map(v => Object.keys(v)).some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
       ) {
@@ -117,48 +118,70 @@ export class ObjectUtil extends Utils {
         return false
       }
     }, (v, i) => v.splice(i, 1));
+    return data;
   }
 
   /**
-   * 添加一条
+   * 添加一条 (平级)
    * @param {*} data 
-   * @param {*} arr 
+   * @param {*} obj 
    */
-  addOneObj(data, arr, newData) {
-    return this.lightCloneAndDelFromArr(data, (v) => {
+  addOneObj(data, obj, newData) {
+    this.lightCloneAndDelFromArr(data, (v) => {
       if (this.isObject(v) &&
-        arr.map(v => Object.keys(v)).every(val => v[val] == obj[val])
+        Object.keys(obj).every(val => v[val] == obj[val])
       ) {
         return true
       } else {
         return false
       }
     }, (v, i) => v.push(newData));
+    return data
   }
   /**
-   * 添加多条
+   * 添加多条 (平级)
    * @param {*} data 
-   * @param {*} arr 
+   * @param {*} obj 
    */
-  addSomeObj(data, arr, newData) {
-    return this.lightCloneAndDelFromArr(data, (v) => {
+  addSomeObj(data, obj, newData) {
+     this.lightCloneAndDelFromArr(data, (v) => {
       //v,子元素
       if (this.isObject(v) &&
-        arr.map(v => Object.keys(v)).some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+        Object.keys(obj).every(val => v[val] == obj[val])
       ) {
         return true
       } else {
         return false
       }
     }, (v, i) => newData.forEach(val => v.push(val)));//v，父元素
+    return data;
   }
 
+  /**
+   * 对数组的操作 - 增删改查
+   * @param {*} data 
+   * @param {*} obj 
+   * @param {*} fn 
+   */
+  operatArr(data,obj,fn){
+    this.lightCloneAndDelFromArr(data, (v) => {
+      //v,子元素
+      if (this.isObject(v) &&
+        Object.keys(obj).every(val => v[val] == obj[val])
+      ) {
+        return true
+      } else {
+        return false
+      }
+    }, (v, i) => fn(v,i));//v，父元素
+    return data;
+  }
 
 
   /**
    * 数组递归修改
    * @param {*} data 
-   * @param {*} callback 
+   * @param {*} callback
    */
   lightCloneAndDelFromArr(data, callback, deal) {
     if ($$.objectUtil.isObject(data)) {
@@ -176,6 +199,7 @@ export class ObjectUtil extends Utils {
     }
   }
 
+  
   /**
    * 
    * @param {any} data 
@@ -233,60 +257,6 @@ export class ObjectUtil extends Utils {
     }
   }
 
-  /**
-   * 
-   * @param {*} data 
-   * @param {*} callbackobj 
-   * @param {*} del 
-   */
-  encodeLightData(data, callbackobj = {}, del) {
-    if (callbackobj == null) callbackobj = {}
-
-    if (this.isDate(data)) {
-      if (this.isFunction(callbackobj.datefn)) {
-        return callbackobj.datefn(data);
-      } else {
-        return data;
-      }
-
-    } else if (this.isObject(data)) {
-      for (let key in data) {
-        if (data.hasOwnProperty(key)){
-          this.encodeData(data[key], callbackobj, del);
-          if (this.isFunction(del) && !del(tem) || !this.isFunction(del)) {
-            
-          }
-          tem = null;
-        }
-      }
-    } else if (this.isArray(data)) {
-      let newdata = [];
-      for (let i = 0; i < data.length; i++) {
-        let tem = this.encodeData(data[i], callbackobj, del)
-        if (this.isFunction(del) && !del(tem) || !this.isFunction(del)) {
-          newdata.push(tem);
-        }
-        tem = null
-
-      }
-      return newdata
-    } else if (typeof data == 'string') {
-      if (this.isFunction(callbackobj.strfn)) {
-        return callbackobj.strfn(data);
-      } else {
-        return data;
-      }
-
-    } else if (typeof data == 'number') {
-      if (this.isFunction(callbackobj.numfn)) {
-        return callbackobj.numfn(data);
-      } else {
-        return data;
-      }
-    } else {
-      return data;
-    }
-  }
   /**
    * 序列化对象  对象转url参数
    * @param {*} obj 

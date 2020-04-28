@@ -82,7 +82,7 @@ export class FunctionUtil extends Utils {
      * @param {*} str 
      */
     escapeRegExp(str){
-        str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     }
 
     /**

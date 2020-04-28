@@ -26,7 +26,7 @@ npm install prime-jsutils
 
 ### 数据处理
 
-1. 深度克隆的操作
+1. 深度克隆(返回新数据)
 
 ```
 //深度克隆 对象数组等数据
@@ -45,19 +45,52 @@ let newobj = $$.objectUtil.delNullAndTrim(value)
 
 //--数组的操作（返回深度克隆后的数据）
 
-//数组中删除a=1且pid=2的对象 obj={a:1,pid:2}
-$$.objectUtil.rmOneObj(arr1,obj)
+//删除数组中符合要求的所有对象 obj={a:1,pid:2}
+//value: obj、arr
+//eg:删除a=1且pid=2的所有对象
+$$.objectUtil.rmOneObj(value,obj)
 
-//数组删除多个对象 arr=[{id:1},{id:3},{id:5,pid:6}]
-$$.objectUtil.rmSomeObj(arr1,arr)
+//删除数组中多个符合要求的多个对象 arr=[{id:1},{id:3},{id:5,pid:6}]
+//value: obj、arr
+//eg：删除id=1或者 id=3 或者 id=5且pid=6 的所有对象
+$$.objectUtil.rmSomeObj(value,arr)
 ```
 
 
-2. 数组的操作
+2. 数组的操作（修改原数组）
 ```
+//删除 只删除符合要求的第一个对象
+$$.objectUtil.removeOneObj(arr, {id:12,number:1})
+$$.objectUtil.removeSomeObj(arr, [{id:12,number:1},{id:13}])
+
+//添加 平级添加
+//找到id=12且number=20的对象，平级添加{id:123}
+$$.objectUtil.addOneObj(arr, {id:12,number:20},{id:123})
+$$.objectUtil.addSomeObj(arr, {id:12,number:1},[{id:222},{id:223},{id:224}])
+
+//某个数组元素的操作- 增删改查
+$$.objectUtil.operatArr(arr, {id:12,number:1}, (v,i)=>{
+    // v:父元素，v[i]:需要获取的元素
+
+    //修改
+    // v[i] ={id:'1改',name:"修改"}
+    // Object.assign(v[i],{id:'1改',name:"修改"})
+
+    //添加
+    // v.unshift({id:'1改',name:"修改"})
+    // v.push({id:'1改',name:"修改"});
+})
 ```
 
-3. 对象序列化与反序列化
+3. 数组的其他操作
+
+```
+//平铺数组
+//eg: [1,2,[3,[4,5]]]=>[1,2,3,4,5]
+let newArr = $$.objectUtil.deepFlatten(arr);
+```
+
+4. 对象序列化与反序列化
 
 ```
 let str = $$.objectUtil.stringfyQueryString(obj);
@@ -122,12 +155,15 @@ eg:
 window.addEventListener('click',$$.functionUtil.throttle(2000,false,function(){
     console.log(1);
 },false))
+
+//转译特殊字符
+let str = escapeRegExp(str);
 ```
 
 ### 校验
 
 ```
-//特殊字符
+//是否包含特殊字符
 isSpecialChar(v)
 
 //数字字母下划线
