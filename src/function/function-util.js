@@ -77,4 +77,22 @@ export class FunctionUtil extends Utils {
         return callback === undefined ? this.throttle(delay, atBegin, false) : this.throttle(delay, callback, atBegin !== false);
     };
 
+    /**
+     * 转义特殊字符
+     * @param {*} str 
+     */
+    escapeRegExp(str){
+        str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    }
+
+    /**
+     * 颜色转16位
+     * @param {*} r 
+     * @param {*} g 
+     * @param {*} b 
+     */
+    rgbToHex(r, g, b){
+        return ((r << 16) + (g << 8) + b).toString(16).padStart(6, '0')
+    }
+
 }

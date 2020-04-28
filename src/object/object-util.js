@@ -52,38 +52,128 @@ export class ObjectUtil extends Utils {
   }
 
   /**
-   * 删除id=1且pid=2的对象
+   * 删除一条
    * @param {arr} data
    * @param {id:1,pid:2} obj
    */
   rmOneObj(data, obj) {
-    let attr = Object.keys(obj)
     return this.encodeData(data, null, (v) => {
       if (this.isObject(v) &&
-        attr.every(val => v[val] == obj[val]
-        )) {
-        return true
-      } else {
-        return false
-      }
-    });
-  }
-  /**
-   * 删除多条
-   * @param {arr} data 
-   * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
-   */
-  rmSomeObj(data, arr) {
-    let attr = arr.map(v => Object.keys(v))
-    return this.encodeData(data, null, (v) => {
-      if (this.isObject(v) &&
-        attr.some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+        Object.keys(obj).every(val => v[val] == obj[val])
       ) {
         return true
       } else {
         return false
       }
     });
+  }
+
+  /**
+   * 删除多条
+   * @param {arr} data 
+   * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
+   */
+  rmSomeObj(data, arr) {
+    return this.encodeData(data, null, (v) => {
+      if (this.isObject(v) &&
+        arr.map(v => Object.keys(v)).some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+      ) {
+        return true
+      } else {
+        return false
+      }
+    });
+  }
+
+  /**
+   * 删除一条(修改原数组)
+   * @param {arr} data
+   * @param {id:1,pid:2} obj
+   */
+  removeOneObj(data, obj) {
+    return this.lightCloneAndDelFromArr(data, (v) => {
+      if (this.isObject(v) &&
+        Object.keys(obj).every(val => v[val] == obj[val])
+      ) {
+        return true
+      } else {
+        return false
+      }
+    }, (v, i) => v.splice(i, 1));
+  }
+
+  /**
+   * 删除多条 (修改原数组)
+   * @param {arr} data 
+   * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
+   */
+  removeSomeObj(data, arr) {
+    return this.lightCloneAndDelFromArr(data, (v) => {
+      if (this.isObject(v) &&
+        arr.map(v => Object.keys(v)).some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+      ) {
+        return true
+      } else {
+        return false
+      }
+    }, (v, i) => v.splice(i, 1));
+  }
+
+  /**
+   * 添加一条
+   * @param {*} data 
+   * @param {*} arr 
+   */
+  addOneObj(data, arr, newData) {
+    return this.lightCloneAndDelFromArr(data, (v) => {
+      if (this.isObject(v) &&
+        arr.map(v => Object.keys(v)).every(val => v[val] == obj[val])
+      ) {
+        return true
+      } else {
+        return false
+      }
+    }, (v, i) => v.push(newData));
+  }
+  /**
+   * 添加多条
+   * @param {*} data 
+   * @param {*} arr 
+   */
+  addSomeObj(data, arr, newData) {
+    return this.lightCloneAndDelFromArr(data, (v) => {
+      //v,子元素
+      if (this.isObject(v) &&
+        arr.map(v => Object.keys(v)).some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+      ) {
+        return true
+      } else {
+        return false
+      }
+    }, (v, i) => newData.forEach(val => v.push(val)));//v，父元素
+  }
+
+
+
+  /**
+   * 数组递归修改
+   * @param {*} data 
+   * @param {*} callback 
+   */
+  lightCloneAndDelFromArr(data, callback, deal) {
+    if ($$.objectUtil.isObject(data)) {
+      for (let key in data) {
+        this.lightCloneAndDelFromArr(data[key], callback, deal);
+      }
+    } else if ($$.objectUtil.isArray(data)) {
+      for (let i = 0; i < data.length; i++) {
+        if (callback(data[i])) {
+          deal(data, i)
+          break;
+        }
+        this.lightCloneAndDelFromArr(data[i], callback, deal)
+      }
+    }
   }
 
   /**
@@ -105,7 +195,7 @@ export class ObjectUtil extends Utils {
     } else if (this.isObject(data)) {
       let newdata = {};
       for (let key in data) {
-        if (data.hasOwnProperty(key)){
+        if (data.hasOwnProperty(key)) {
           let tem = this.encodeData(data[key], callbackobj, del);
           if (this.isFunction(del) && !del(tem) || !this.isFunction(del)) {
             newdata[key] = tem;
@@ -228,6 +318,30 @@ export class ObjectUtil extends Utils {
       return {}
     }
     return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
+  }
+
+  /**
+   * 平铺数组
+   * @param {*} arr 
+   */
+  deepFlatten(arr) {
+    return arr.reduce((a, v) => a.concat(Array.isArray(v) ? deepFlatten(v) : v), []);
+  }
+
+  /**
+   * 去掉数组中相同的元素 filterNonUnique([1,2,2,3,4,4,5]) -> [1,3,5]
+   * @param {*} arr 
+   */
+  filterNonUnique(arr) {
+    return arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i))
+  }
+
+  /**
+   * 打乱数组排序
+   * @param {} arr 
+   */
+  shuffle(arr) {
+    return arr.sort(() => Math.random() - 0.5)
   }
 
 }
