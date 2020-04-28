@@ -66,7 +66,6 @@
     console.log($$.objectUtil.clone(obj1))
     console.log($$.objectUtil.rmOneObj(arr1,{a:1,pid:2}))
     console.log($$.objectUtil.rmSomeObj(arr1,arr))
-    
     console.log(Object.assign({}, obj1, obj2))
     console.log($$.objectUtil.isDate(obj1.bb))
     console.log('克隆-------------------------------------------------------------')
@@ -74,47 +73,9 @@
     console.log($$.objectUtil.stringfyQueryString(obj2))
     console.log($$.objectUtil.parseQueryString(str2))
 
-    //time
-    console.log($$.timeUtil.formatPassTime(new Date('2020/3/21 22:30:10')));
-    console.log($$.timeUtil.formatRemainTime(new Date('2020/5/22 22:30:10')));
-    console.log($$.timeUtil.getEndDate(5, 2020));
-    console.log('时间-------------------------------------------------------------')
-
-    //dom
-
-    //function
-    let count = 0;
-    window.addEventListener('click', $$.functionUtil.throttle(2000, function () {
-        console.log(1);
-    }, true));
-    console.log('函数-------------------------------------------------------------')
-    
-    //继承
-    function clone(origin) {
-        let originProto = Object.getPrototypeOf(origin);
-        return Object.assign(Object.create(originProto), origin);
-    }
-    Object.setPrototypeOf(obj2, obj1)
-    Object.setPrototypeOf(obj3, obj2)
-    console.log(obj1)
-    console.log(obj2)
-    console.log(obj3)
-
-    let o1 = $$.objectUtil.cloneObj(obj3)
-    let o2 = $$.objectUtil.clone(obj3)
-    console.log('继承-------------------------------------------------------------')
-
-    console.log($$.objectUtil.isEmptyValue([1]))
-    console.log($$.objectUtil.isEmptyObject({id:1}))
-
-    console.log('校验-------------------------------------------------------------')
-    //regexp
-    console.log($$.regExpUtil.isDecimalsNotZero('12333.211',5,3))
-    console.log($$.regExpUtil.bytelength('我1aB',6,8))
-
-    $$.objectUtil.removeSomeObj(arr1,[{id:1},{id:3},{id:5,pid:6},{id:10,pid:3}])
-    console.log(arr1)
-
+    // $$.objectUtil.removeSomeObj(arr1,arr)
+    $$.objectUtil.removeOneObj(arr1,{id:1})
+    console.log(arr1);
 </script>
 
 </html>

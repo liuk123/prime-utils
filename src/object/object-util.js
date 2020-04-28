@@ -270,4 +270,28 @@ export class ObjectUtil extends Utils {
     return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
   }
 
+  /**
+   * 平铺数组
+   * @param {*} arr 
+   */
+  deepFlatten(arr){
+    return arr.reduce((a, v) => a.concat(Array.isArray(v) ? deepFlatten(v) : v), []);
+  }
+
+  /**
+   * 去掉数组中相同的元素 filterNonUnique([1,2,2,3,4,4,5]) -> [1,3,5]
+   * @param {*} arr 
+   */
+  filterNonUnique(arr){
+    return arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i))
+  }
+
+  /**
+   * 打乱数组排序
+   * @param {} arr 
+   */
+  shuffle(arr){
+    return arr.sort(() => Math.random() - 0.5)
+  }
+  
 }

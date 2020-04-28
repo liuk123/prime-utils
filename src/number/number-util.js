@@ -55,4 +55,5 @@ export class NumberUtil extends Utils {
     return Math.floor(min + Math.random() * (max - min));
   }
 
+
 }
