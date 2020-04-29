@@ -9,7 +9,10 @@
     "prod": "webpack -p --config webpack.conf.js --progress --colors",
     "publish":"npm publish dist"
   },
-  "author": "liuk123",
+  "keywords": [
+    "js","js工具","js数据处理"
+  ],
+  "author": "xiaobaik",
   "license": "ISC",
   "devDependencies": {},
   "dependencies": {}
