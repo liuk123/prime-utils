@@ -111,7 +111,7 @@ export class ObjectUtil extends Utils {
   removeSomeObj(data, arr) {
     this.lightCloneAndDelFromArr(data, (v) => {
       if (this.isObject(v) &&
-        arr.filter(v => Object.keys(v)).some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+        arr.findIndex(v => Object.keys(v)).some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
       ) {
         return true
       } else {
