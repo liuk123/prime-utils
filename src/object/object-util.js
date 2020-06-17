@@ -203,19 +203,14 @@ export class ObjectUtil extends Utils {
   /**
    * 
    * @param {any} data 
-   * @param {datefn: '',strfn: '',numfn: ''} callbackobj
+   * @param {strfn: '',numfn: ''} callbackobj
    * @param {callback} del  return true =>删除 return false=>不删除
    */
   encodeData(data, callbackobj = {}, del) {
     if (callbackobj == null) callbackobj = {}
 
     if (this.isDate(data)) {
-      if (this.isFunction(callbackobj.datefn)) {
-        return callbackobj.datefn(new Date().setTime(data.getTime()));
-      } else {
         return new Date().setTime(data.getTime());
-      }
-
     } else if (this.isObject(data)) {
       let newdata = {};
       for (let key in data) {
