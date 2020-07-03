@@ -55,51 +55,64 @@ export class NumberUtil extends Utils {
     return Math.floor(min + Math.random() * (max - min));
   }
 
-//match(/^-?\d+(.\d+)?/)
-
   add(n1,n2,around){
-    
-    let str1 = n1.toString(), str2 = n2.toString();
-    n1 = Number(n1);
-    n2 = Number(n2);
-    if(isNaN(n1)||isNaN(n2)){
+    if(n1 == null || n2 == null){
       throw 'arguments error'
     }
+    let strs1 = n1.toString().match(/^-?\d+(.\d+)?/),
+    strs2 = n2.toString().match(/^-?\d+(.\d+)?/);
+    if(strs1 === null || strs2 === null){
+      throw 'arguments error'
+    }
+    let str1 = strs1[0];
+    let str2 = strs2[0];
+    let num1 = Number(str1),
+    num2 = Number(str2);
     let len1 = str1.indexOf('.')==-1 ? 0 : str1.length-str1.indexOf('.')-1;
     let len2 = str2.indexOf('.')==-1 ? 0 : str2.length-str2.indexOf('.')-1;
     let maxlen = Math.max(len1, len2);
-    let result = (n1+n2).toFixed(around || maxlen);
+    let result = (num1+num2).toFixed(around || maxlen);
     return result
   }
   sub(n1,n2,around){
     return this.add(n1,-Number(n2),around);
   }
   mul(n1,n2,around){
-    let str1 = n1.toString(), str2 = n2.toString();
-    n1 = Number(n1);
-    n2 = Number(n2);
-    if(isNaN(n1)||isNaN(n2)){
+    if(n1 == null || n2 == null){
       throw 'arguments error'
     }
-    
+    let strs1 = n1.toString().match(/^-?\d+(.\d+)?/),
+    strs2 = n2.toString().match(/^-?\d+(.\d+)?/);
+    if(strs1 === null || strs2 === null){
+      throw 'arguments error'
+    }
+    let str1 = strs1[0];
+    let str2 = strs2[0];
+    let num1 = Number(str1),
+    num2 = Number(str2);
     let len1 = str1.indexOf('.')==-1 ? 0 : str1.length-str1.indexOf('.')-1;
     let len2 = str2.indexOf('.')==-1 ? 0 : str2.length-str2.indexOf('.')-1;
     let maxlen = len1+len2;
-    let result = (n1*n2).toFixed(around || maxlen);
+    let result = (num1*num2).toFixed(around || maxlen);
     return result;
   }
   div(n1,n2,around){
-    let str1 = n1.toString(), str2 = n2.toString();
-    n1 = Number(n1);
-    n2 = Number(n2);
-    if(isNaN(n1)||isNaN(n2)){
+    if(n1 == null || n2 == null){
       throw 'arguments error'
     }
-    
+    let strs1 = n1.toString().match(/^-?\d+(.\d+)?/),
+    strs2 = n2.toString().match(/^-?\d+(.\d+)?/);
+    if(strs1 === null || strs2 === null){
+      throw 'arguments error'
+    }
+    let str1 = strs1[0];
+    let str2 = strs2[0];
+    let num1 = Number(str1),
+    num2 = Number(str2);
     let len1 = str1.indexOf('.')==-1 ? 0 : str1.length-str1.indexOf('.')-1;
     let len2 = str2.indexOf('.')==-1 ? 0 : str2.length-str2.indexOf('.')-1;
     let maxlen = Math.max(len1, len2) + 1;
-    let result = (n1/n2).toFixed(around || maxlen);
+    let result = (num1/num2).toFixed(around || maxlen);
     return result;
   }
 }
