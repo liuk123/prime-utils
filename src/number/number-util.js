@@ -55,81 +55,58 @@ export class NumberUtil extends Utils {
     return Math.floor(min + Math.random() * (max - min));
   }
 
-  add(n1,n2,around){
-    if(n1 == null || n2 == null){
-      throw 'arguments error'
-    }
-    let strs1 = n1.toString().match(/^-?\d+(.\d+)?/),
-    strs2 = n2.toString().match(/^-?\d+(.\d+)?/);
-    if(strs1 === null || strs2 === null){
-      throw 'arguments error'
-    }
-    
-    let str1 = strs1[0];
-    let str2 = strs2[0];
-    let num1 = Number(str1),
-    num2 = Number(str2);
-    if(Number.isSafeInteger(num1) || Number.isSafeInteger(num2)){
+  add(n1,n2){
+
+    let num1 = Number.parseFloat(n1),
+    num2 = Number.parseFloat(n2);
+    if(!Number.isSafeInteger(Number.parseInt(num1)) || !Number.isSafeInteger(Number.parseInt(num2))){
       throw "arguments is not isSafeInteger"
     }
+    let str1 = num1.toString(),
+    str2 = num2.toString();
     let len1 = str1.indexOf('.')==-1 ? 0 : str1.length-str1.indexOf('.')-1;
     let len2 = str2.indexOf('.')==-1 ? 0 : str2.length-str2.indexOf('.')-1;
     let maxlen = Math.max(len1, len2);
-    let result = (num1+num2).toFixed(around || maxlen);
-    if(Number.isSafeInteger(result)){
+    let result = Number.parseInt((num1*Math.pow(10,maxlen)+num2*Math.pow(10,maxlen)+0.5))/Math.pow(10,maxlen);
+    if(!Number.isSafeInteger(Number.parseInt(result))){
       throw "result is not isSafeInteger"
     }
     return result
   }
-  sub(n1,n2,around){
-    return this.add(n1,-Number(n2),around);
+  sub(n1,n2){
+    return this.add(n1,-Number(n2));
   }
-  mul(n1,n2,around){
-    if(n1 == null || n2 == null){
-      throw 'arguments error'
-    }
-    let strs1 = n1.toString().match(/^-?\d+(.\d+)?/),
-    strs2 = n2.toString().match(/^-?\d+(.\d+)?/);
-    if(strs1 === null || strs2 === null){
-      throw 'arguments error'
-    }
-    let str1 = strs1[0];
-    let str2 = strs2[0];
-    let num1 = Number(str1),
-    num2 = Number(str2);
-    if(Number.isSafeInteger(num1) || Number.isSafeInteger(num2)){
+  mul(n1,n2){
+    let num1 = Number.parseFloat(n1),
+    num2 = Number.parseFloat(n2);
+    if(!Number.isSafeInteger(Number.parseInt(num1)) || !Number.isSafeInteger(Number.parseInt(num2))){
       throw "arguments is not isSafeInteger"
     }
+    let str1 = num1.toString(),
+    str2 = num2.toString();
     let len1 = str1.indexOf('.')==-1 ? 0 : str1.length-str1.indexOf('.')-1;
     let len2 = str2.indexOf('.')==-1 ? 0 : str2.length-str2.indexOf('.')-1;
-    let maxlen = len1+len2;
-    let result = (num1*num2).toFixed(around || maxlen);
-    if(Number.isSafeInteger(result)){
+
+    let result = Number.parseInt((num1*Math.pow(10,len1))*(num2*Math.pow(10,len2))+0.5)/Math.pow(10, len1+len2)
+
+    if(!Number.isSafeInteger(Number.parseInt(result))){
       throw "result is not isSafeInteger"
     }
     return result;
   }
-  div(n1,n2,around){
-    if(n1 == null || n2 == null){
-      throw 'arguments error'
-    }
-    let strs1 = n1.toString().match(/^-?\d+(.\d+)?/),
-    strs2 = n2.toString().match(/^-?\d+(.\d+)?/);
-    if(strs1 === null || strs2 === null){
-      throw 'arguments error'
-    }
-    let str1 = strs1[0];
-    let str2 = strs2[0];
-    let num1 = Number(str1),
-    num2 = Number(str2);
-    if(Number.isSafeInteger(num1) || Number.isSafeInteger(num2)){
+  div(n1,n2){
+    let num1 = Number.parseFloat(n1),
+    num2 = Number.parseFloat(n2);
+    if(!Number.isSafeInteger(Number.parseInt(num1)) || !Number.isSafeInteger(Number.parseInt(num2))){
       throw "arguments is not isSafeInteger"
     }
-    let len1 = str1.indexOf('.')==-1 ? 0 : str1.length-str1.indexOf('.')-1;
-    let len2 = str2.indexOf('.')==-1 ? 0 : str2.length-str2.indexOf('.')-1;
-    let maxlen = Math.max(len1, len2) + 1;
-    let result = (num1/num2).toFixed(around || maxlen);
-    if(Number.isSafeInteger(result)){
+
+    let value = num1/num2;
+    let str = value.toString();
+    let len = str.indexOf('.')==-1 ? 0 : str.length-str.indexOf('.')-1;
+
+    let result = Number.parseInt(value * Math.pow(10,len)+0.5)/Math.pow(10,len);
+    if(!Number.isSafeInteger(Number.parseInt(result))){
       throw "result is not isSafeInteger"
     }
     return result;
