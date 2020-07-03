@@ -67,14 +67,20 @@ export class NumberUtil extends Utils {
     let len1 = str1.indexOf('.')==-1 ? 0 : str1.length-str1.indexOf('.')-1;
     let len2 = str2.indexOf('.')==-1 ? 0 : str2.length-str2.indexOf('.')-1;
     let maxlen = Math.max(len1, len2);
-    let result = Number.parseInt((num1*Math.pow(10,maxlen)+num2*Math.pow(10,maxlen)+0.5))/Math.pow(10,maxlen);
+
+    let result
+    if(num1+num2>0){
+      result = Number.parseInt((num1*Math.pow(10,maxlen)+num2*Math.pow(10,maxlen)+0.5))/Math.pow(10,maxlen);
+    }else{
+      result = Number.parseInt((num1*Math.pow(10,maxlen)+num2*Math.pow(10,maxlen)-0.5))/Math.pow(10,maxlen);
+    }
     if(!Number.isSafeInteger(Number.parseInt(result))){
       throw "result is not isSafeInteger"
     }
     return result
   }
   sub(n1,n2){
-    return this.add(n1,-Number(n2));
+    return this.add(n1,-Number.parseFloat(n2));
   }
   mul(n1,n2){
     let num1 = Number.parseFloat(n1),
@@ -87,7 +93,12 @@ export class NumberUtil extends Utils {
     let len1 = str1.indexOf('.')==-1 ? 0 : str1.length-str1.indexOf('.')-1;
     let len2 = str2.indexOf('.')==-1 ? 0 : str2.length-str2.indexOf('.')-1;
 
-    let result = Number.parseInt((num1*Math.pow(10,len1))*(num2*Math.pow(10,len2))+0.5)/Math.pow(10, len1+len2)
+    let result;
+    if(num1*num2>0){
+      result = Number.parseInt((num1*Math.pow(10,len1))*(num2*Math.pow(10,len2))+0.5)/Math.pow(10, len1+len2)
+    }else{
+      result = Number.parseInt((num1*Math.pow(10,len1))*(num2*Math.pow(10,len2))-0.5)/Math.pow(10, len1+len2)
+    }
 
     if(!Number.isSafeInteger(Number.parseInt(result))){
       throw "result is not isSafeInteger"
@@ -105,10 +116,27 @@ export class NumberUtil extends Utils {
     let str = value.toString();
     let len = str.indexOf('.')==-1 ? 0 : str.length-str.indexOf('.')-1;
 
-    let result = Number.parseInt(value * Math.pow(10,len)+0.5)/Math.pow(10,len);
+    let result;
+    if(num1*num1>0){
+      result = Number.parseInt(value * Math.pow(10,len)+0.5)/Math.pow(10,len);
+    }else{
+      result = Number.parseInt(value * Math.pow(10,len)-0.5)/Math.pow(10,len);
+    }
     if(!Number.isSafeInteger(Number.parseInt(result))){
       throw "result is not isSafeInteger"
     }
     return result;
   }
+
+  toFixed(num, s) {
+    let times = Math.pow(10, s);
+    let des;
+    if(num>0){
+      des = parseInt(num * times + 0.5, 10) / times
+    }else{
+      des = parseInt(num * times - 0.5, 10) / times
+    }
+    
+    return des.toString();
+   }
 }
