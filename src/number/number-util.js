@@ -64,14 +64,21 @@ export class NumberUtil extends Utils {
     if(strs1 === null || strs2 === null){
       throw 'arguments error'
     }
+    
     let str1 = strs1[0];
     let str2 = strs2[0];
     let num1 = Number(str1),
     num2 = Number(str2);
+    if(Number.isSafeInteger(num1) || Number.isSafeInteger(num2)){
+      throw "arguments is not isSafeInteger"
+    }
     let len1 = str1.indexOf('.')==-1 ? 0 : str1.length-str1.indexOf('.')-1;
     let len2 = str2.indexOf('.')==-1 ? 0 : str2.length-str2.indexOf('.')-1;
     let maxlen = Math.max(len1, len2);
     let result = (num1+num2).toFixed(around || maxlen);
+    if(Number.isSafeInteger(result)){
+      throw "result is not isSafeInteger"
+    }
     return result
   }
   sub(n1,n2,around){
@@ -90,10 +97,16 @@ export class NumberUtil extends Utils {
     let str2 = strs2[0];
     let num1 = Number(str1),
     num2 = Number(str2);
+    if(Number.isSafeInteger(num1) || Number.isSafeInteger(num2)){
+      throw "arguments is not isSafeInteger"
+    }
     let len1 = str1.indexOf('.')==-1 ? 0 : str1.length-str1.indexOf('.')-1;
     let len2 = str2.indexOf('.')==-1 ? 0 : str2.length-str2.indexOf('.')-1;
     let maxlen = len1+len2;
     let result = (num1*num2).toFixed(around || maxlen);
+    if(Number.isSafeInteger(result)){
+      throw "result is not isSafeInteger"
+    }
     return result;
   }
   div(n1,n2,around){
@@ -109,10 +122,16 @@ export class NumberUtil extends Utils {
     let str2 = strs2[0];
     let num1 = Number(str1),
     num2 = Number(str2);
+    if(Number.isSafeInteger(num1) || Number.isSafeInteger(num2)){
+      throw "arguments is not isSafeInteger"
+    }
     let len1 = str1.indexOf('.')==-1 ? 0 : str1.length-str1.indexOf('.')-1;
     let len2 = str2.indexOf('.')==-1 ? 0 : str2.length-str2.indexOf('.')-1;
     let maxlen = Math.max(len1, len2) + 1;
     let result = (num1/num2).toFixed(around || maxlen);
+    if(Number.isSafeInteger(result)){
+      throw "result is not isSafeInteger"
+    }
     return result;
   }
 }
