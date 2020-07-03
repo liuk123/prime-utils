@@ -1,7 +1,5 @@
 import { Utils } from "../common/utils";
 
-
-
 export class NumberUtil extends Utils {
   constructor() {
     super();
@@ -74,9 +72,11 @@ export class NumberUtil extends Utils {
     }
     return result
   }
+
   sub(n1,n2){
     return this.add(n1,-Number.parseFloat(n2));
   }
+
   mul(n1,n2){
     let num1 = Number.parseFloat(n1),
     num2 = Number.parseFloat(n2);
@@ -100,6 +100,7 @@ export class NumberUtil extends Utils {
     }
     return result;
   }
+  
   div(n1,n2){
     let num1 = Number.parseFloat(n1),
     num2 = Number.parseFloat(n2);
