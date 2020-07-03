@@ -68,12 +68,7 @@ export class NumberUtil extends Utils {
     let len2 = str2.indexOf('.')==-1 ? 0 : str2.length-str2.indexOf('.')-1;
     let maxlen = Math.max(len1, len2);
 
-    let result
-    if(num1+num2>0){
-      result = Number.parseInt((num1*Math.pow(10,maxlen)+num2*Math.pow(10,maxlen)+0.5))/Math.pow(10,maxlen);
-    }else{
-      result = Number.parseInt((num1*Math.pow(10,maxlen)+num2*Math.pow(10,maxlen)-0.5))/Math.pow(10,maxlen);
-    }
+    let result = this.toFixed(num1+num2, maxlen)
     if(!Number.isSafeInteger(Number.parseInt(result))){
       throw "result is not isSafeInteger"
     }
@@ -116,12 +111,8 @@ export class NumberUtil extends Utils {
     let str = value.toString();
     let len = str.indexOf('.')==-1 ? 0 : str.length-str.indexOf('.')-1;
 
-    let result;
-    if(num1*num1>0){
-      result = Number.parseInt(value * Math.pow(10,len)+0.5)/Math.pow(10,len);
-    }else{
-      result = Number.parseInt(value * Math.pow(10,len)-0.5)/Math.pow(10,len);
-    }
+    let result = this.toFixed(value, len)
+   
     if(!Number.isSafeInteger(Number.parseInt(result))){
       throw "result is not isSafeInteger"
     }
@@ -137,6 +128,6 @@ export class NumberUtil extends Utils {
       des = parseInt(num * times - 0.5, 10) / times
     }
     
-    return des.toString();
+    return des;
    }
 }
