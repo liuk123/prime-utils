@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script type="text/javascript" src="./dist/js/app.js"></script>
+    <script>
+        window.$ = HTMLElement.prototype.$ = function (selector) {
+            var elems = (this == window ? document : this).querySelectorAll(selector);
+            return elems.length == 0 ? null :
+                elems.length == 1 ? elems[0] :
+                    elems;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>number-utils</h3>
+        <input type="text" id="func">
+</body>
+<script>
+    // console.log(19.1145 + 1.4)
+    // console.log($$.numberUtil.add(19.1145, 1.4))
+    // console.log(1.1-0.2)
+    // console.log($$.numberUtil.sub(1.1, 0.2))
+    // console.log(19.1145 * 1.4)
+    // console.log($$.numberUtil.mul(19.1145, 1.4))
+    // console.log(1.2/.4)
+    // console.log($$.numberUtil.div(1.2, 0.4))
+    // console.log($$.numberUtil.div(116, 10))
+    console.log($$.numberUtil.add('123.123px', 2.1))
+</script>
+
+</html>

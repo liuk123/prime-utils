@@ -53,34 +53,34 @@ export class RegExpUtil extends Utils {
       mac: /^([A-Fa-f0-9]{2}[:-]){5}[A-Fa-f0-9]{2}$/,
 
       //火车车次
-      trainNumber=/^[GCDZTSPKXLY1-9]\d{1,4}$/,
+      trainNumber:/^[GCDZTSPKXLY1-9]\d{1,4}$/,
 
       //社会统一代码
-      UnifiedSocialCreditCode = /^[0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}$/,
+      UnifiedSocialCreditCode: /^[0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}$/,
 
       //子网掩码
-      SubnetMask =/^(?:\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(?:\.(?:\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/,
+      SubnetMask: /^(?:\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(?:\.(?:\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/,
 
-      time12 = /^(?:1[0-2]|0?[1-9]):[0-5]\d:[0-5]\d$/,
-      time24 = /^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/,
+      time12: /^(?:1[0-2]|0?[1-9]):[0-5]\d:[0-5]\d$/,
+      time24: /^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/,
 
       //base64
-      base64 = /^\s*data:(?:[a-z]+\/[a-z0-9-+.]+(?:;[a-z-]+=[a-z0-9-]+)?)?(?:;base64)?,([a-z0-9!$&',()*+;=\-._~:@/?%\s]*?)\s*$/i,
+      base64: /^\s*data:(?:[a-z]+\/[a-z0-9-+.]+(?:;[a-z-]+=[a-z0-9-]+)?)?(?:;base64)?,([a-z0-9!$&',()*+;=\-._~:@/?%\s]*?)\s*$/i,
 
       //银行卡号
-      bankCard = /^[1-9]\d{9,29}$/,
+      bankCard: /^[1-9]\d{9,29}$/,
 
       //汉字
-      chinese = /^(?:[\u3400-\u4DB5\u4E00-\u9FEA\uFA0E\uFA0F\uFA11\uFA13\uFA14\uFA1F\uFA21\uFA23\uFA24\uFA27-\uFA29]|[\uD840-\uD868\uD86A-\uD86C\uD86F-\uD872\uD874-\uD879][\uDC00-\uDFFF]|\uD869[\uDC00-\uDED6\uDF00-\uDFFF]|\uD86D[\uDC00-\uDF34\uDF40-\uDFFF]|\uD86E[\uDC00-\uDC1D\uDC20-\uDFFF]|\uD873[\uDC00-\uDEA1\uDEB0-\uDFFF]|\uD87A[\uDC00-\uDFE0])+$/,
+      chinese: /^(?:[\u3400-\u4DB5\u4E00-\u9FEA\uFA0E\uFA0F\uFA11\uFA13\uFA14\uFA1F\uFA21\uFA23\uFA24\uFA27-\uFA29]|[\uD840-\uD868\uD86A-\uD86C\uD86F-\uD872\uD874-\uD879][\uDC00-\uDFFF]|\uD869[\uDC00-\uDED6\uDF00-\uDFFF]|\uD86D[\uDC00-\uDF34\uDF40-\uDFFF]|\uD86E[\uDC00-\uDC1D\uDC20-\uDFFF]|\uD873[\uDC00-\uDEA1\uDEB0-\uDFFF]|\uD87A[\uDC00-\uDFE0])+$/,
 
       //密码强度校验，最少6位，包括至少1个大写字母，1个小写字母，1个数字，1个特殊字符
-      pwd=/^\S*(?=\S{6,})(?=\S*\d)(?=\S*[A-Z])(?=\S*[a-z])(?=\S*[!@#$%^&*? ])\S*$/,
+      pwd: /^\S*(?=\S{6,})(?=\S*\d)(?=\S*[A-Z])(?=\S*[a-z])(?=\S*[!@#$%^&*? ])\S*$/,
 
       //16进制颜色
-      color16=/^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/,
+      color16: /^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/,
 
       //wx
-      wx = /^[a-zA-Z][-_a-zA-Z0-9]{5,19}$/,
+      wx: /^[a-zA-Z][-_a-zA-Z0-9]{5,19}$/,
 
     }
 
@@ -178,8 +178,8 @@ export class RegExpUtil extends Utils {
   }
   //字符长度
   bytelength(v, min, max) {
-    let cnStrLength = v.match(this.reg.cn).length;
-    let length = v.length + cnStrLength;
+    let cnStr = v.match(this.reg.cn);
+    let length = cnStr==null? data.reviewRemark.length : data.reviewRemark.length + cnStr.length;
     return min <= length && length <= max
   }
 
