@@ -1,7 +1,7 @@
 {
-  "name": "prime-utils",
-  "version": "1.0.0",
-  "description": "js工具包 数据处理，校验处理，时间处理",
+  "name": "prime-jsutils",
+  "version": "1.0.1-alpha.4",
+  "description": "js原生工具包 数据（对象、数组，时间，字符串）处理，校验处理，时间处理",
   "main": "js/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -14,7 +14,7 @@
     "js工具",
     "js数据处理"
   ],
-  "author": "xiaobaik",
+  "author": "xiaobai123",
   "license": "ISC",
   "devDependencies": {
     "webpack": "^4.43.0",

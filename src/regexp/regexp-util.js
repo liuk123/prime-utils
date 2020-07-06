@@ -13,11 +13,11 @@ export class RegExpUtil extends Utils {
       //整数
       integer: /^\d+$/,
       //n位小数
-      decimals: (n) => new RegExp(`^\\d+(.\\d{1,${n}})?$`),
+      decimals: (n) => new RegExp(`^\\d+(\\.\\d{1,${n}})?$`),
       //m位整数n位小数
-      decimalsNotZero: (m, n) => new RegExp(`^[1-9]\\d{0,${m - 1}}(\.\\d{1,${n}})?$|^0\.\\d{0,${n - 1}}[1-9]$`),
+      decimalsNotZero: (m, n) => new RegExp(`^[1-9]\\d{0,${m - 1}}(\\.\\d{1,${n}})?$|^0\\.\\d{0,${n - 1}}[1-9]$`),
       //汉字
-      cn: /[\u4e00-\u9fa5]+/gm,
+      cn: /[\u4e00-\u9fa5]+/,
       //邮箱
       email: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,
       //身份证
@@ -25,7 +25,7 @@ export class RegExpUtil extends Utils {
       //手机
       phone: /^((\+?86)|(\(\+86\)))?1\d{10}$/,
       //手机或座机
-      phoneAndTel: /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/,
+      phoneAndTel: /^\d$/,
       //url
       url: new RegExp('^(ht|f)tp(s?)://[0-9a-zA-Z]([-.w]*[0-9a-zA-Z])*(:(0-9)*)' + "*(/?)([a-zA-Z0-9-.?,'/\\+&amp;%$#_]*)?"),
       //ip地址
@@ -49,6 +49,8 @@ export class RegExpUtil extends Utils {
         '[0-9]{3})|([1-9][0-9]{2})|([1-9][0-9]{1})|([0-9]))?$'),
       //mac
       mac: /^([A-Fa-f0-9]{2}[:-]){5}[A-Fa-f0-9]{2}$/,
+      //双字节
+      doubleByte: /[^\x00-\xff]/,
 
       //火车车次
       trainNumber:/^[GCDZTSPKXLY1-9]\d{1,4}$/,
@@ -79,10 +81,7 @@ export class RegExpUtil extends Utils {
 
       //wx
       wx: /^[a-zA-Z][-_a-zA-Z0-9]{5,19}$/,
-
-      //双字节
-      doubleByte: /[^\x00-\xff]/,
-
+      
       //回车或者换行
       space: /\s|[\r\n]/,
 
@@ -95,11 +94,7 @@ export class RegExpUtil extends Utils {
 
       number: '只可输入数字',
       integer: '只可输入整数',
-
-      email: '邮箱格式不正确',
-      phone: '电话格式不正确',
-      idcard: '身份证格式不正确',
-
+    
       maxValue: (n) => `请输入不大于${n}的数值`,
       minValue: (n) => `请输入不小于${n}的数值`,
       valueRange: (min, max) => `请输入${min}到${max}之间的数值`,
@@ -111,6 +106,10 @@ export class RegExpUtil extends Utils {
 
       equalTo: '两次输入密码不一致',
       remote: '数据已存在',
+
+      email: '邮箱格式不正确',
+      phone: '电话格式不正确',
+      idcard: '身份证格式不正确',
 
       url: 'http格式不正确',
       ip: 'IP格式不正确',
@@ -161,7 +160,7 @@ export class RegExpUtil extends Utils {
   isPhone(v) {
     return this.reg.phone.test(v);
   }
-  isPhoneAndTel(v) {
+  isPhoneAndTel(v) {//bug
     return this.reg.phoneAndTel.test(v);
   }
   isUrl(v) {
