@@ -82,6 +82,12 @@ export class RegExpUtil extends Utils {
       //wx
       wx: /^[a-zA-Z][-_a-zA-Z0-9]{5,19}$/,
 
+      //双字节
+      doubleByte: /[^\x00-\xff]/,
+
+      //回车或者换行
+      space: /\s|[\r\n]/,
+
     }
 
     this.msg = {
@@ -178,7 +184,7 @@ export class RegExpUtil extends Utils {
   }
   //字符长度
   bytelength(v, min, max) {
-    let cnStr = v.match(this.reg.cn);
+    let cnStr = v.match(this.reg.doubleByte);
     let length = cnStr==null? data.reviewRemark.length : data.reviewRemark.length + cnStr.length;
     return min <= length && length <= max
   }
