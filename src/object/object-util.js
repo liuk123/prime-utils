@@ -348,9 +348,9 @@ export class ObjectUtil extends Utils {
    * 去掉数组中相同的元素 filterNonUnique([1,2,2,3,4,4,5]) -> [1,3,5]
    * @param {*} arr 
    */
-  filterNonUnique(arr) {
-    return arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i))
-  }
+  // filterNonUnique(arr) {
+  //   return arr.filter(i => arr.indexOf(i) === arr.lastIndexOf(i))
+  // }
 
   /**
    * 打乱数组排序
@@ -358,6 +358,16 @@ export class ObjectUtil extends Utils {
    */
   shuffle(arr) {
     return arr.sort(() => Math.random() - 0.5)
+  }
+
+  /**
+   * 汉字排序
+   * @param {[]} arr 
+   */
+  sortCn(arr){
+    if(this.isArray(arr)){
+      arr.sort((a,b)=>a.localeCompare(b,'zh-CN'))
+    }
   }
 
 }
