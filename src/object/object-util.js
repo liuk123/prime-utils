@@ -7,7 +7,7 @@ export class ObjectUtil extends Utils {
   }
 
   /**
-   * 去空格
+   * 去空格(字符串)
    * @param {*} data 
    */
   trim(data) {
@@ -17,7 +17,7 @@ export class ObjectUtil extends Utils {
   }
 
   /**
-   * 删除空字符串 null []
+   * 删除空属性 '',[],{},null,undefined，NaN
    * @param {*} data 
    */
   delNull(data) {
@@ -52,73 +52,137 @@ export class ObjectUtil extends Utils {
   }
 
   /**
-   * 删除一条
+   * 删除(符合要求的所有对象)
    * @param {arr} data
    * @param {id:1,pid:2} obj
    */
-  rmOneObj(data, obj) {
-    return this.encodeData(data, null, (v) => {
-      if (this.isObject(v) &&
-        Object.keys(obj).every(val => v[val] == obj[val])
-      ) {
-        return true
-      } else {
-        return false
-      }
-    });
-  }
+  // rmOneObj(data, obj) {
+  //   let tem = Object.keys(obj);
+  //   return this.encodeData(data, null, (v) => {
+  //     if (this.isObject(v) && tem.every(val => v[val] == obj[val])
+  //     ) {
+  //       return true
+  //     } else {
+  //       return false
+  //     }
+  //   });
+  // }
 
   /**
-   * 删除多条
+   * 删除(符合要求的所有对象)
    * @param {arr} data 
    * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
    */
-  rmSomeObj(data, arr) {
-    return this.encodeData(data, null, (v) => {
-      if (this.isObject(v) &&
-        arr.map(v => Object.keys(v)).some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
-      ) {
-        return true
-      } else {
-        return false
-      }
-    });
+  rmSomeObj(data, condition) {
+    if(this.isArray(condition)){
+      let tem = condition.map(v => Object.keys(v));
+      return this.encodeData(data, null, (v) => {
+        if (this.isObject(v) &&
+        tem.some((val, i) => val.every(subval => v[subval] == condition[i][subval]))
+        ) {
+          return true
+        } else {
+          return false
+        }
+      });
+    }else{
+      let tem = Object.keys(obj);
+      return this.encodeData(data, null, (v) => {
+        if (this.isObject(v) && tem.every(val => v[val] == obj[val])
+        ) {
+          return true
+        } else {
+          return false
+        }
+      });
+    }
+    
   }
 
   /**
    * 删除一条(修改原数组)
    * @param {arr} data
-   * @param {id:1,pid:2} obj
+   * @param {id:1,pid:2} obj/arr
    */
-  removeOneObj(data, obj) {
-    this.delOneFromArr(data, (v) => {
-      if (this.isObject(v) &&
-        Object.keys(obj).every(val => v[val] == obj[val])
-      ) {
-        return true
-      } else {
-        return false
-      }
-    }, (v, i) => v.splice(i, 1));
-    return data;
+  removeOneObj(data, condition) {
+    if(this.isArray(condition)){
+      let tem = condition.map(v => Object.keys(v));
+      this.delSomeFromArr(data, (datav) => {
+        if (this.isObject(datav) &&
+          tem.some((val, i) => {
+            if(val.every(subval => datav[subval] == condition[i][subval])){
+              tem.splice(i,1);
+              return true;
+            }else{
+              return false;
+            }
+          })
+        ) {
+          return true
+        } else {
+          return false
+        }
+      }, (v, i) => v.splice(i, 1));
+      return data;
+    }else{
+      let tem = Object.keys(condition);
+      this.delOneFromArr(data, (v) => {
+        if (this.isObject(v) &&
+          tem.every(val => v[val] == condition[val])
+        ) {
+          return true
+        } else {
+          return false
+        }
+      }, (v, i) => v.splice(i, 1));
+      return data;
+    }
   }
 
   /**
-   * 删除多条 (修改原数组)
+   * 删除所有 (修改原数组)
    * @param {arr} data 
    * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
    */
-  removeSomeObj(data, arr) {
-    this.delSomeFromArr(data, (datav) => {
-      if (this.isObject(datav) &&
-      arr.map(v => Object.keys(v)).some((val, i) => val.every(subval => datav[subval] == arr[i][subval]))
-      ) {
-        return true
-      } else {
-        return false
-      }
-    }, (v, i) => v.splice(i, 1));
-    return data;
+  removeSomeObj(data, condition) {
+    if(this.isArray(condition)){
+      let tem = condition.map(v => Object.keys(v));
+      this.delSomeFromArr(data, (datav) => {
+        if (this.isObject(datav) &&
+          tem.some((val, i) => {
+            if(val.every(subval => datav[subval] == condition[i][subval])){
+              return true;
+            }else{
+              return false;
+            }
+          })
+        ) {
+          return true
+        } else {
+          return false
+        }
+      }, (v, i) => v.splice(i, 1));
+      return data;
+    }else{
+      let tem = Object.keys(condition);
+      this.delSomeFromArr(data, (v) => {
+        if (this.isObject(v) &&
+          tem.every(val => v[val] == condition[val])
+        ) {
+          return true
+        } else {
+          return false
+        }
+      }, (v, i) => {
+        if(this.isArray(newData)){
+          newData.forEach(val => v.push(val))
+        }else{
+          v.push(newData)
+        }
+      });
+      return data;
+    }
+    
   }
 
   /**
@@ -126,48 +190,139 @@ export class ObjectUtil extends Utils {
    * @param {*} data 
    * @param {*} obj 
    */
-  addOneObj(data, obj, newData) {
-    this.delOneFromArr(data, (v) => {
-      if (this.isObject(v) &&
-        Object.keys(obj).every(val => v[val] == obj[val])
-      ) {
-        return true
-      } else {
-        return false
-      }
-    }, (v, i) => v.push(newData));
-    return data
+  addOneObj(data, condition, newData) {
+      if(this.isArray(condition)){
+        let tem = condition.map(v => Object.keys(v));
+        this.delSomeFromArr(data, (datav) => {
+          if (this.isObject(datav) &&
+            tem.some((val, i) => {
+              if(val.every(subval => datav[subval] == condition[i][subval])){
+                tem.splice(i,1);
+                return true;
+              }else{
+                return false;
+              }
+            })
+          ) {
+            return true
+          } else {
+            return false
+          }
+        }, (v, i) => {
+          if(this.isArray(newData)){
+            newData.forEach(val => v.push(val))
+          }else{
+            v.push(newData)
+          }
+          
+        });
+        return data;
+    }else{
+      let tem = Object.keys(condition);
+      this.delOneFromArr(data, (v) => {
+        if (this.isObject(v) &&
+        tem.every(val => v[val] == condition[val])
+        ) {
+          return true
+        } else {
+          return false
+        }
+      }, (v, i) => {
+        if(this.isArray(newData)){
+          newData.forEach(val => v.push(val))
+        }else{
+          v.push(newData)
+        }
+        
+      });
+      return data
+    }
   }
   /**
    * 添加多条 (平级)
    * @param {*} data 
    * @param {*} obj 
    */
-  addSomeObj(data, obj, newData) {
+  addSomeObj(data, condition, newData) {
+    if(this.isArray(condition)){
+      let tem = condition.map(v => Object.keys(v));
+      this.delSomeFromArr(data, (datav) => {
+        if (this.isObject(datav) &&
+          tem.some((val, i) => {
+            if(val.every(subval => datav[subval] == condition[i][subval])){
+              return true;
+            }else{
+              return false;
+            }
+          })
+        ) {
+          return true
+        } else {
+          return false
+        }
+      }, (v, i) =>{
+        if(this.isArray(newData)){
+          newData.forEach(val => v.push(val))
+        }else{
+          v.push(newData)
+        }
+      });
+      return data;
+    }else{
+      let tem = Object.keys(condition);
+      this.delSomeFromArr(data, (v) => {
+        //v,子元素
+        if (this.isObject(v) &&
+        tem.every(val => v[val] == condition[val])
+        ) {
+          return true
+        } else {
+          return false
+        }
+      }, (v, i) => {
+        if(this.isArray(newData)){
+          newData.forEach(val => v.push(val))
+        }else{
+          v.push(newData)
+        }
+      });//v，父元素
+      return data;
+    }
+    
+  }
+
+  /**
+   * 对数组的操作 - 增删改查(修改第一条复核条件的)
+   * @param {*} data
+   * @param {*} obj 
+   * @param {*} fn 
+   */
+  operatOneArr(data, obj, fn) {
+    let tem = Object.keys(obj);
     this.delOneFromArr(data, (v) => {
       //v,子元素
       if (this.isObject(v) &&
-        Object.keys(obj).every(val => v[val] == obj[val])
+      tem.every(val => v[val] == obj[val])
       ) {
         return true
       } else {
         return false
       }
-    }, (v, i) => newData.forEach(val => v.push(val)));//v，父元素
+    }, (v, i) => fn(v, i));//v，父元素
     return data;
   }
-
   /**
-   * 对数组的操作 - 增删改查
+   * 对数组的操作 - 增删改查(修改所有复核条件的)
    * @param {*} data
    * @param {*} obj 
    * @param {*} fn 
    */
-  operatArr(data, obj, fn) {
-    this.delOneFromArr(data, (v) => {
+  operatSomeArr(data, obj, fn) {
+    let tem = Object.keys(obj);
+    this.delSomeFromArr(data, (v) => {
       //v,子元素
       if (this.isObject(v) &&
-        Object.keys(obj).every(val => v[val] == obj[val])
+      tem.every(val => v[val] == obj[val])
       ) {
         return true
       } else {

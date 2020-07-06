@@ -70,14 +70,13 @@
         ]
     }
 
-    console.log($$.objectUtil.rmOneObj(obj, { id: 12, number: 1 }));
     console.log($$.objectUtil.rmSomeObj(arr,[{id:12,number:1},{id:13}]));
     console.log($$.objectUtil.removeOneObj(arr,{id:12,number:1}))
     console.log($$.objectUtil.removeSomeObj(arr,[{id:12,number:1},{id:13}]))
 
     console.log($$.objectUtil.addOneObj(arr,{id:12,number:20},{id:123}))
     console.log($$.objectUtil.addSomeObj(arr,{id:12,number:1},[{id:222},{id:223},{id:224}]))
-    arr = $$.objectUtil.operatArr(arr, { id: 12, number: 1 }, (v, i) => {
+    arr = $$.objectUtil.operatOneArr(arr, { id: 12, number: 1 }, (v, i) => {
         // v:父元素，v[i]:需要获取的元素
 
         //修改

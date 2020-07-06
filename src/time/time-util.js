@@ -63,11 +63,18 @@ export class TimeUtil extends Utils{
     return new Date(year, month, 0).getDate();
   };
 
-  //一个月第一天是周几
-  getWeekFirstDay(year,month){
+  /**
+   *一个月第一天是周几 
+   */
+  getWeekFirstDay(month,year){
     return new Date(year,month-1,1).getDay()
   }
 
+  /**
+   * 格式化时间
+   * @param {*} date 
+   * @param {*} fmt 
+   */
   formatDateToStr(date,fmt='yyyy-MM-dd hh:mm:ss'){
     let ret;
     const opt = {

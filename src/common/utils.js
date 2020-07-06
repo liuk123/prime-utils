@@ -57,7 +57,7 @@ export class Utils {
     if (this.isObject(o) && this.isEmptyObject(o) ||
       this.isArray(o) && o.length == 0 ||
       this.isString(o) && o === '' ||
-      this.isNaN(o) ||
+      isNaN(o) ||
       this.isNullOrUndefined(o)) {
       return true
     } else {
