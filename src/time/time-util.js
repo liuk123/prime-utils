@@ -9,7 +9,7 @@ export class TimeUtil extends Utils{
    * 距离现在的时间
    * @param {Date} startTime 
    */
-  formatPassTime(startTime) {
+  passTime(startTime) {
     let currentTime = new Date(),
       time = currentTime - new Date(startTime),
       day = Number.parseInt(time / (1000 * 60 * 60 * 24)),
@@ -30,7 +30,7 @@ export class TimeUtil extends Utils{
    * @param {*} endTime 
    * @param {*} isEn
    */
-  formatRemainTime(endTime,isEn=false) {
+  remainTime(endTime,isEn=false) {
     let startDate = new Date();
     let endDate = new Date(endTime);
     let t = endDate.getTime() - startDate.getTime();
