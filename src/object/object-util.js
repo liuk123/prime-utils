@@ -144,7 +144,7 @@ export class ObjectUtil extends Utils {
    * @param {*} obj 
    */
   addSomeObj(data, obj, newData) {
-    this.delSomeFromArr(data, (v) => {
+    this.delOneFromArr(data, (v) => {
       //v,子元素
       if (this.isObject(v) &&
         Object.keys(obj).every(val => v[val] == obj[val])
@@ -159,12 +159,12 @@ export class ObjectUtil extends Utils {
 
   /**
    * 对数组的操作 - 增删改查
-   * @param {*} data 
+   * @param {*} data
    * @param {*} obj 
    * @param {*} fn 
    */
   operatArr(data, obj, fn) {
-    this.delSomeFromArr(data, (v) => {
+    this.delOneFromArr(data, (v) => {
       //v,子元素
       if (this.isObject(v) &&
         Object.keys(obj).every(val => v[val] == obj[val])
@@ -211,8 +211,7 @@ export class ObjectUtil extends Utils {
     } else if (this.isArray(data)) {
       for (let i = 0; i < data.length; i++) {
         if (callback(data[i])) {
-          deal(data, i)
-          // break;
+          deal(data, i);
         }
         this.delSomeFromArr(data[i], callback, deal)
       }
