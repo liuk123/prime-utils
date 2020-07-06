@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script type="text/javascript" src="./dist/js/app.js"></script>
+    <script>
+        window.$ = HTMLElement.prototype.$ = function (selector) {
+            var elems = (this == window ? document : this).querySelectorAll(selector);
+            return elems.length == 0 ? null :
+                elems.length == 1 ? elems[0] :
+                    elems;
+        }
+    </script>
+</head>
+
+<body>
+    <h1>object-utils</h3>
+        <input type="text" id="func" oninput="test(event)">
+</body>
+<script>
+    function test(e){
+        var data;
+        // data = $$.regExpUtil.isSpecialChar(e.target.value);
+
+        // data = $$.regExpUtil.isNormalChar(e.target.value);
+        // data = $$.regExpUtil.isInteger(e.target.value);
+        // data = $$.regExpUtil.isDecimals(e.target.value,3);
+        data = $$.regExpUtil.isDecimalsNotZero(e.target.value,3,2);
+
+        console.log(data);
+    }
+</script>
+
+</html>

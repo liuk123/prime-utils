@@ -7,7 +7,7 @@ export class RegExpUtil extends Utils {
 
     this.reg = {
       //特殊字符
-      specialChar: /[\`\~\!\@\#\$\%\^\&\*\(\)\=\+\;\:\'\"\\\|\,<\.\>\/\?\[\]\{\}]/,
+      specialChar: /[\`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\=|\+|\;|\:|\'|\"|\\|\||\,|\<|\.|\>|\/|\?|\[|\]|\{|\}]/,
       //数字字母下划线
       normalChar: /^[_A-Za-z0-9]+$/,
       //整数
@@ -16,8 +16,6 @@ export class RegExpUtil extends Utils {
       decimals: (n) => new RegExp(`^\\d+(.\\d{1,${n}})?$`),
       //m位整数n位小数
       decimalsNotZero: (m, n) => new RegExp(`^[1-9]\\d{0,${m - 1}}(\.\\d{1,${n}})?$|^0\.\\d{0,${n - 1}}[1-9]$`),
-      //1-28
-      month28: /^(?:[1-9]|(1[0-9])?|2[0-8])$/,
       //汉字
       cn: /[\u4e00-\u9fa5]+/gm,
       //邮箱
@@ -97,7 +95,6 @@ export class RegExpUtil extends Utils {
 
       number: '只可输入数字',
       integer: '只可输入整数',
-      month28: '只可输入1-28的数字',
 
       email: '邮箱格式不正确',
       phone: '电话格式不正确',
@@ -141,7 +138,7 @@ export class RegExpUtil extends Utils {
   }
 
   isSpecialChar(v) {
-    return v.indexOf(this.reg.specialChar) != -1;
+    return v.search(this.reg.specialChar) != -1;
   }
   isNormalChar(v) {
     return this.reg.normalChar.test(v);
@@ -150,10 +147,10 @@ export class RegExpUtil extends Utils {
     return this.reg.integer.test(v);
   }
   isDecimals(v, n) {
-    return new RegExp(this.reg.decimals(n)).test(v);
+    return this.reg.decimals(n).test(v);
   }
   isDecimalsNotZero(v, m, n) {
-    return new RegExp(this.reg.decimalsNotZero(m, n)).test(v);
+    return this.reg.decimalsNotZero(m, n).test(v);
   }
   isEmail(v) {
     return this.reg.email.test(v);
