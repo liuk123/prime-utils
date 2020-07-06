@@ -185,7 +185,7 @@ export class RegExpUtil extends Utils {
   //字符长度
   bytelength(v, min, max) {
     let cnStr = v.match(this.reg.doubleByte);
-    let length = cnStr==null? data.reviewRemark.length : data.reviewRemark.length + cnStr.length;
+    let length = cnStr==null? v.length : v.length + cnStr.length;
     return min <= length && length <= max
   }
 

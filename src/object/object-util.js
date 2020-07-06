@@ -91,7 +91,7 @@ export class ObjectUtil extends Utils {
    * @param {id:1,pid:2} obj
    */
   removeOneObj(data, obj) {
-    this.lightCloneAndDelFromArr(data, (v) => {
+    this.delOneFromArr(data, (v) => {
       if (this.isObject(v) &&
         Object.keys(obj).every(val => v[val] == obj[val])
       ) {
@@ -109,9 +109,9 @@ export class ObjectUtil extends Utils {
    * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
    */
   removeSomeObj(data, arr) {
-    this.lightCloneAndDelFromArr(data, (v) => {
-      if (this.isObject(v) &&
-        arr.findIndex(v => Object.keys(v)).some((val, i) => val.every(subval => v[subval] == arr[i][subval]))
+    this.delSomeFromArr(data, (datav) => {
+      if (this.isObject(datav) &&
+      arr.map(v => Object.keys(v)).some((val, i) => val.every(subval => datav[subval] == arr[i][subval]))
       ) {
         return true
       } else {
@@ -127,7 +127,7 @@ export class ObjectUtil extends Utils {
    * @param {*} obj 
    */
   addOneObj(data, obj, newData) {
-    this.lightCloneAndDelFromArr(data, (v) => {
+    this.delOneFromArr(data, (v) => {
       if (this.isObject(v) &&
         Object.keys(obj).every(val => v[val] == obj[val])
       ) {
@@ -144,7 +144,7 @@ export class ObjectUtil extends Utils {
    * @param {*} obj 
    */
   addSomeObj(data, obj, newData) {
-    this.lightCloneAndDelFromArr(data, (v) => {
+    this.delSomeFromArr(data, (v) => {
       //v,子元素
       if (this.isObject(v) &&
         Object.keys(obj).every(val => v[val] == obj[val])
@@ -164,7 +164,7 @@ export class ObjectUtil extends Utils {
    * @param {*} fn 
    */
   operatArr(data, obj, fn) {
-    this.lightCloneAndDelFromArr(data, (v) => {
+    this.delSomeFromArr(data, (v) => {
       //v,子元素
       if (this.isObject(v) &&
         Object.keys(obj).every(val => v[val] == obj[val])
@@ -183,10 +183,10 @@ export class ObjectUtil extends Utils {
    * @param {*} data 
    * @param {*} callback
    */
-  lightCloneAndDelFromArr(data, callback, deal) {
+  delOneFromArr(data, callback, deal) {
     if (this.isObject(data)) {
       for (let key in data) {
-        this.lightCloneAndDelFromArr(data[key], callback, deal);
+        this.delOneFromArr(data[key], callback, deal);
       }
     } else if (this.isArray(data)) {
       for (let i = 0; i < data.length; i++) {
@@ -194,10 +194,31 @@ export class ObjectUtil extends Utils {
           deal(data, i)
           break;
         }
-        this.lightCloneAndDelFromArr(data[i], callback, deal)
+        this.delOneFromArr(data[i], callback, deal)
       }
     }
   }
+  /**
+   * 数组递归修改
+   * @param {*} data 
+   * @param {*} callback
+   */
+  delSomeFromArr(data, callback, deal) {
+    if (this.isObject(data)) {
+      for (let key in data) {
+        this.delSomeFromArr(data[key], callback, deal);
+      }
+    } else if (this.isArray(data)) {
+      for (let i = 0; i < data.length; i++) {
+        if (callback(data[i])) {
+          deal(data, i)
+          // break;
+        }
+        this.delSomeFromArr(data[i], callback, deal)
+      }
+    }
+  }
+
 
 
   /**

@@ -1,5 +1,5 @@
 {
-  "name": "prime-utils.js",
+  "name": "prime-utils",
   "version": "1.0.0",
   "description": "js工具包 数据处理，校验处理，时间处理",
   "main": "js/app.js",
