@@ -16,17 +16,9 @@ export class Utils {
   isString(o) {
     return this.getDataType(o) === 'String';
   }
-
-  isNumberNotNaN(o) {
-    return this.getDataType(o) === 'Number' && !isNaN(o);
-  }
   isNumber(){
     return this.getDataType(o) === 'Number';
   }
-  isNaN(o){
-    return this.getDataType(o) === 'Number' && isNaN(o);
-  }
-
   isDate(o) {
     return this.getDataType(o) === 'Date';
   }
@@ -36,38 +28,51 @@ export class Utils {
   isBoolean(o) {
     return this.getDataType(o) === 'Boolean';
   }
-
   isNull(o){
     return this.getDataType(o) === 'Null';
   }
   isUndefind(o){
     return this.getDataType(o) === 'Undefined';
   }
-  isNullOrUndefined(o){
-    return this.isNull(o)||this.isUndefind(o);
+
+
+  isNotEmptyObject(o) {
+    if(this.isObject(o)){
+      for (let key in o) {return true;}
+      return false;
+    }else{
+      return false;
+    }
+  }
+  isNotEmptyArray(o){
+    return this.isArray(o) && o.length > 0;
   }
   
   isEmptyObject(o) {
-    for (let key in o) {
+    if(this.isObject(o)){
+      for (let key in o) {return false;}
+      return true;
+    }else{
       return false;
     }
-    return true;
+    
+  }
+  isEmptyArray(o){
+    return this.isArray(o) && o.length == 0;
   }
   isEmptyValue(o) {
-    if (this.isObject(o) && this.isEmptyObject(o) ||
-      this.isArray(o) && o.length == 0 ||
-      this.isString(o) && o === '' ||
-      isNaN(o) ||
-      this.isNullOrUndefined(o)) {
+    if (this.isEmptyObject(o) ||
+        this.isEmptyArray(o) ||
+        isNaN(o) ||
+        isBlank(val)) {
       return true
     } else {
       return false
     }
-
   }
   isBlank(val){
     if(val == null || val == ""){
-        return true;
+      return true;
     }else{
       return false;
     }
