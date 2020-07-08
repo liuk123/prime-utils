@@ -3,11 +3,11 @@ import { Utils } from "../common/utils";
 
 export class ObjectUtil extends Utils {
 
-  
+
 
   constructor() {
     super();
-    this.go=true;
+    this.go = true;
   }
 
   /**
@@ -57,39 +57,22 @@ export class ObjectUtil extends Utils {
 
   /**
    * 删除(符合要求的所有对象)
-   * @param {arr} data
-   * @param {id:1,pid:2} obj
-   */
-  // rmOneObj(data, obj) {
-  //   let tem = Object.keys(obj);
-  //   return this.encodeData(data, null, (v) => {
-  //     if (this.isObject(v) && tem.every(val => v[val] == obj[val])
-  //     ) {
-  //       return true
-  //     } else {
-  //       return false
-  //     }
-  //   });
-  // }
-
-  /**
-   * 删除(符合要求的所有对象)
    * @param {arr} data 
    * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
    */
   rmSomeObj(data, condition) {
-    if(this.isArray(condition)){
+    if (this.isArray(condition)) {
       let tem = condition.map(v => Object.keys(v));
       return this.encodeData(data, null, (v) => {
         if (this.isObject(v) &&
-        tem.some((val, i) => val.every(subval => v[subval] == condition[i][subval]))
+          tem.some((val, i) => val.every(subval => v[subval] == condition[i][subval]))
         ) {
           return true
         } else {
           return false
         }
       });
-    }else{
+    } else {
       let tem = Object.keys(obj);
       return this.encodeData(data, null, (v) => {
         if (this.isObject(v) && tem.every(val => v[val] == obj[val])
@@ -100,7 +83,7 @@ export class ObjectUtil extends Utils {
         }
       });
     }
-    
+
   }
 
   /**
@@ -109,17 +92,16 @@ export class ObjectUtil extends Utils {
    * @param {id:1,pid:2} obj/arr
    */
   removeOneObj(data, condition) {
-    if(this.isArray(condition)){
+    if (this.isArray(condition)) {
       condition = this.clone(condition);
-      this.go=true;
-      this.delOneObj(data,condition);
-      return data;
-    }else{
+    } else {
       condition = [condition];
-      this.go=true;
-      this.delOneObj(data,condition);
-      return data;
     }
+    this.go = true;
+    this.operateOneObj(data, condition, (v, i) => {
+      v.splice(i, 1)
+    });
+    return data;
   }
   /**
    * 删除所有 (修改原数组)
@@ -127,94 +109,14 @@ export class ObjectUtil extends Utils {
    * @param {*} arr [{id:1},{id:3},{id:5,pid:6}]
    */
   removeSomeObj(data, condition) {
-    if(this.isArray(condition)){
-      condition = this.clone(condition);
-      this.go=true;
-      this.delSomeObj(data,condition);
-      return data;
-    }else{
+    if (!this.isArray(condition)) {
       condition = [condition];
-      this.go=true;
-      this.delSomeObj(data,condition);
-      return data;
     }
-  }
-
-  /**
-   * 删除一条符合条件的数据
-   * @param {*} data 
-   * @param {arr} condition 
-   */
-  delOneObj(data,condition){
-    if(!this.go){
-      return false;
-    }
-    if (this.isObject(data)) {
-      for (let key in data) {
-        this.delOneObj(data[key], condition);
-      }
-    } else if (this.isArray(data)) {
-      for(let i=data.length-1; i>=0 ; i--){ //[{id:1,number:1},{id:2}]
-        if(condition.length==0){
-          this.go=false;
-          return false;
-        }
-        if(this.isObject(data[i])){
-          for(let j=condition.length-1; j>=0; j--){ //[{id:1,number:1},{id:2}]
-            let isSame = true;
-            for(let key in condition[j]){
-              if(data[i][key] !== condition[j][key]){ 
-                isSame = false;
-              }
-            }
-            if(isSame){
-                data.splice(i,1);
-                condition.splice(j,1);
-            }
-          }  
-        }
-        this.delOneObj(data[i], condition)
-      }
-     
-    }
-  }
-
-  /**
-   * 删除所有符合条件的数据
-   * @param {*} data 
-   * @param {arr} condition 
-   */
-  delSomeObj(data,condition){
-    if(!this.go){
-      return false;
-    }
-    if (this.isObject(data)) {
-      for (let key in data) {
-        this.delSomeObj(data[key], condition);
-      }
-    } else if (this.isArray(data)) {
-      for(let i=data.length-1; i>=0 ; i--){ //[{id:1,number:1},{id:2}]
-        if(condition.length==0){
-          this.go=false;
-          return false;
-        }
-        if(this.isObject(data[i])){
-          for(let j=condition.length-1; j>=0; j--){ //[{id:1,number:1},{id:2}]
-            let isSame = true;
-            for(let key in condition[j]){
-              if(data[i][key] !== condition[j][key]){ 
-                isSame = false;
-              }
-            }
-            if(isSame){
-                data.splice(i,1);
-            }
-          }  
-        }
-        this.delSomeObj(data[i], condition)
-      }
-     
-    }
+    this.go = true;
+    this.operateSomeObj(data, condition, (v, i) => {
+      v.splice(i, 1)
+    });
+    return data;
   }
 
 
@@ -222,108 +124,45 @@ export class ObjectUtil extends Utils {
    * 添加一条 (平级)
    * @param {*} data 
    * @param {*} obj 
+   * @param {arr/obj} newData 
    */
   addOneObj(data, condition, newData) {
-      if(this.isArray(condition)){
-        let tem = condition.map(v => Object.keys(v));
-        this.delSomeFromArr(data, (datav) => {
-          if (this.isObject(datav) &&
-            tem.some((val, i) => {
-              if(val.every(subval => datav[subval] == condition[i][subval])){
-                tem.splice(i,1);
-                return true;
-              }else{
-                return false;
-              }
-            })
-          ) {
-            return true
-          } else {
-            return false
-          }
-        }, (v, i) => {
-          if(this.isArray(newData)){
-            v.splice(i+1,0,...newData)
-          }else{
-            v.splice(i+1,0,newData)
-          }
-          
-        });
-        return data;
-    }else{
-      let tem = Object.keys(condition);
-      this.go=true;
-      this.delOneFromArr(data, (v) => {
-        if (this.isObject(v) &&
-        tem.every(val => v[val] == condition[val])
-        ) {
-          return true
-        } else {
-          return false
-        }
-      }, (v, i) => {
-        if(this.isArray(newData)){
-          v.splice(i+1,0,...newData)
-        }else{
-          v.splice(i+1,0,newData)
-        }
-        
-      });
-      return data
+    if (this.isArray(condition)) {
+      condition = this.clone(condition);
+    } else {
+      condition = [condition];
     }
+    this.go = true;
+    this.operateOneObj(data, condition, (v, i) => {
+      if (this.isArray(newData)) {
+        v.splice(i + 1, 0, ...newData)
+      } else {
+        v.splice(i + 1, 0, newData)
+      }
+    });
+    return data;
   }
   /**
    * 添加多条 (平级)
    * @param {*} data 
    * @param {*} obj 
+   * @param {arr/obj} newData 
    */
   addSomeObj(data, condition, newData) {
-    if(this.isArray(condition)){
-      let tem = condition.map(v => Object.keys(v));
-      this.delSomeFromArr(data, (datav) => {
-        if (this.isObject(datav) &&
-          tem.some((val, i) => {
-            if(val.every(subval => datav[subval] == condition[i][subval])){
-              return true;
-            }else{
-              return false;
-            }
-          })
-        ) {
-          return true
-        } else {
-          return false
-        }
-      }, (v, i) =>{
-        if(this.isArray(newData)){
-          newData.forEach(val => v.push(val))
-        }else{
-          v.push(newData)
-        }
-      });
-      return data;
-    }else{
-      let tem = Object.keys(condition);
-      this.delSomeFromArr(data, (v) => {
-        //v,子元素
-        if (this.isObject(v) &&
-        tem.every(val => v[val] == condition[val])
-        ) {
-          return true
-        } else {
-          return false
-        }
-      }, (v, i) => {
-        if(this.isArray(newData)){
-          newData.forEach(val => v.push(val))
-        }else{
-          v.push(newData)
-        }
-      });//v，父元素
-      return data;
+    if (!this.isArray(condition)) {
+      condition = [condition];
     }
-    
+    this.go = true;
+    this.operateSomeObj(data, condition, (v, i) => {
+      if (this.isArray(newData)) {
+        v.splice(i + 1, 0, ...newData)
+      } else {
+        v.splice(i + 1, 0, newData)
+      }
+    });
+    return data;
   }
+
 
   /**
    * 对数组的操作 - 增删改查(修改第一条复核条件的)
@@ -331,89 +170,99 @@ export class ObjectUtil extends Utils {
    * @param {*} obj 
    * @param {*} fn 
    */
-  operatOneArr(data, obj, fn) {
-    let tem = Object.keys(obj);
-    this.go=true;
-    this.delOneFromArr(data, (v) => {
-      //v,子元素
-      if (this.isObject(v) &&
-      tem.every(val => v[val] == obj[val])
-      ) {
-        return true
-      } else {
-        return false
-      }
-    }, (v, i) => fn(v, i));//v，父元素
+  operateOneArr(data, condition, fn) {
+    if (this.isArray(condition)) {
+      condition = this.clone(condition);
+    } else {
+      condition = [condition];
+    }
+    this.go = true;
+    this.operateOneObj(data,condition,(v,i) => {
+      fn(v,i)
+    });//v，父元素
     return data;
   }
-  /**
-   * 对数组的操作 - 增删改查(修改所有复核条件的)
-   * @param {*} data
-   * @param {*} obj 
-   * @param {*} fn 
-   */
-  operatSomeArr(data, obj, fn) {
-    let tem = Object.keys(obj);
-    this.delSomeFromArr(data, (v) => {
-      //v,子元素
-      if (this.isObject(v) &&
-      tem.every(val => v[val] == obj[val])
-      ) {
-        return true
-      } else {
-        return false
-      }
-    }, (v, i) => fn(v, i));//v，父元素
+  operateSomeArr(data, condition, fn) {
+    if (!this.isArray(condition)) {
+      condition = [condition];
+    }
+    this.go = true;
+    this.operateSomeObj(data,condition,(v,i) => {
+      fn(v,i)
+    });//v，父元素
     return data;
   }
 
 
-  /**
-   * 数组递归修改
+    /**
+   * 添加一条符合条件的数据(内部使用)
    * @param {*} data 
-   * @param {*} callback
+   * @param {arr} condition 
    */
-  delOneFromArr(data, callback, deal) {
-    if(!this.go){
+  operateOneObj(data, condition, fn) {
+    if (!this.go) {
       return false;
     }
     if (this.isObject(data)) {
       for (let key in data) {
-        this.delOneFromArr(data[key], callback, deal);
+        this.operateOneObj(data[key], condition, fn)
       }
     } else if (this.isArray(data)) {
-      for (let i = 0; i < data.length; i++) {
-        if (callback(data[i])) {
-          deal(data, i)
-          this.go=false;
-          break;
+      for (let i = data.length - 1; i >= 0; i--) {
+        if (condition.length == 0) {
+          this.go = false;
+          return false;
         }
-        this.delOneFromArr(data[i], callback, deal)
+        if (this.isObject(data[i])) {
+          for (let j = condition.length - 1; j >= 0; j--) {
+            let isSame = true;
+            for (let key in condition[j]) {
+              if (data[i][key] !== condition[j][key]) {
+                isSame = false;
+              }
+            }
+            if (isSame) {
+              fn(data, i);
+              condition.splice(j, 1);
+            }
+          }
+        }
+        this.operateOneObj(data[i], condition, fn)
       }
     }
   }
 
-  /**
-   * 数组递归修改
-   * @param {*} data 
-   * @param {*} callback
-   */
-  delSomeFromArr(data, callback, deal) {
+  operateSomeObj(data, condition, fn) {
+    if (!this.go) {
+      return false;
+    }
     if (this.isObject(data)) {
       for (let key in data) {
-        this.delSomeFromArr(data[key], callback, deal);
+        this.operateSomeObj(data[key], condition, fn)
       }
     } else if (this.isArray(data)) {
-      for (let i = data.length; i > 0; i--) {
-        
-        if (callback(data[i])) {
-          deal(data, i);
+      for (let i = data.length - 1; i >= 0; i--) {
+        if (condition.length == 0) {
+          this.go = false;
+          return false;
         }
-        this.delSomeFromArr(data[i], callback, deal)
+        if (this.isObject(data[i])) {
+          for (let j = condition.length - 1; j >= 0; j--) {
+            let isSame = true;
+            for (let key in condition[j]) {
+              if (data[i][key] !== condition[j][key]) {
+                isSame = false;
+              }
+            }
+            if (isSame) {
+              fn(data, i);
+            }
+          }
+        }
+        this.operateSomeObj(data[i], condition, fn)
       }
     }
   }
-
 
 
   /**
@@ -426,7 +275,7 @@ export class ObjectUtil extends Utils {
     if (callbackobj == null) callbackobj = {}
 
     if (this.isDate(data)) {
-        return new Date().setTime(data.getTime());
+      return new Date().setTime(data.getTime());
     } else if (this.isObject(data)) {
       let newdata = {};
       for (let key in data) {
@@ -559,9 +408,9 @@ export class ObjectUtil extends Utils {
    * 汉字排序
    * @param {[]} arr 
    */
-  sortCn(arr){
-    if(this.isArray(arr)){
-      arr.sort((a,b)=>a.localeCompare(b,'zh-CN'))
+  sortCn(arr) {
+    if (this.isArray(arr)) {
+      arr.sort((a, b) => a.localeCompare(b, 'zh-CN'))
     }
   }
 

@@ -78,16 +78,19 @@
     // log($$.objectUtil.removeSomeObj(arr,[{id:12,number:1},{id:13}]))
     // log($$.objectUtil.removeSomeObj(arr,{id:12}))
 
-    log($$.objectUtil.addOneObj(arr,[{id:12,number:20},{id:13}],[{id:333},{number:444}]))
-    // log($$.objectUtil.addSomeObj(arr,{id:12,number:1},[{id:222},{id:223},{id:224}]))
-    // arr = $$.objectUtil.operatOneArr(arr, { id: 12, number: 1 }, (v, i) => {
-        // v:父元素，v[i]:需要获取的元素
+    // log($$.objectUtil.addSomeObj(arr,[{id:12,number:20},{id:13}],[{id:333},{number:444}]))
+    // log($$.objectUtil.addSomeObj(arr,[{id:12,number:20},{id:13}],[{id:333},{number:444}]))
+    // log($$.objectUtil.addOneObj(arr,[{id:12,number:20},{id:13}],[{id:222},{id:333},{id:444}]))
 
-        //修改
+    // arr = $$.objectUtil.operateOneArr(arr, { id: 12, number: 1 }, (v, i) => {
+        // v:父元素，v[i]:需要获取的元素
+        // log(v)
+        // log(i)
+        // 修改
         // v[i] ={id:'1改',name:"修改"}
         // Object.assign(v[i],{id:'1改',name:"修改"})
 
-        //添加
+        // 添加
         // v.unshift({id:'1改',name:"修改"})
         // v.push({id:'1改',name:"修改"});
     // })
