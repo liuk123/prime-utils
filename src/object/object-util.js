@@ -250,6 +250,7 @@ export class ObjectUtil extends Utils {
           for (let j = condition.length - 1; j >= 0; j--) {
             let isSame = true;
             for (let key in condition[j]) {
+              console.log(JSON.stringify(data))
               if (data[i][key] !== condition[j][key]) {
                 isSame = false;
               }

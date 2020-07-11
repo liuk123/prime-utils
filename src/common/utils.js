@@ -64,7 +64,7 @@ export class Utils {
     if (this.isEmptyObject(o) ||
         this.isEmptyArray(o) ||
         isNaN(o) ||
-        isBlank(val)) {
+        this.isBlank(o)) {
       return true
     } else {
       return false
