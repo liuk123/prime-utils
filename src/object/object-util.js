@@ -219,11 +219,13 @@ export class ObjectUtil extends Utils {
             for (let key in condition[j]) {
               if (data[i][key] !== condition[j][key]) {
                 isSame = false;
+                break;
               }
             }
             if (isSame) {
               fn(data, i);
               condition.splice(j, 1);
+              break;
             }
           }
         }
@@ -237,8 +239,8 @@ export class ObjectUtil extends Utils {
       return false;
     }
     if (this.isObject(data)) {
-      for (let key in data) {
-        this.operateSomeObj(data[key], condition, fn)
+      for (let datakey in data) {
+        this.operateSomeObj(data[datakey], condition, fn)
       }
     } else if (this.isArray(data)) {
       for (let i = data.length - 1; i >= 0; i--) {
@@ -250,13 +252,14 @@ export class ObjectUtil extends Utils {
           for (let j = condition.length - 1; j >= 0; j--) {
             let isSame = true;
             for (let key in condition[j]) {
-              console.log(JSON.stringify(data))
               if (data[i][key] !== condition[j][key]) {
                 isSame = false;
+                break;
               }
             }
             if (isSame) {
               fn(data, i);
+              break;
             }
           }
         }
