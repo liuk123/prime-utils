@@ -4,8 +4,11 @@ export class RegExpUtil extends Utils {
 
   constructor() {
     super();
+    this.reg = Symbol()
+    this.msg = Symbol()
+    this.placeholder = Symbol()
 
-    this.reg = {
+    this[this.reg] = {
       //特殊字符
       specialChar: /[\`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\=|\+|\;|\:|\'|\"|\\|\||\,|\<|\.|\>|\/|\?|\[|\]|\{|\}]/,
       //数字字母下划线
@@ -49,7 +52,7 @@ export class RegExpUtil extends Utils {
       //mac
       mac: /^([A-Fa-f0-9]{2}[:-]){5}[A-Fa-f0-9]{2}$/,
       //双字节
-      doubleByte: /[^\x00-\xff]/,
+      doubleByte: /[^\x00-\xff]/g,
 
       //火车车次
       trainNumber:/^[GCDZTSPKXLY1-9]\d{1,4}$/,
@@ -87,8 +90,7 @@ export class RegExpUtil extends Utils {
       space: /\s|[\r\n]/,
 
     }
-
-    this.msg = {
+    this[this.msg] = {
       required: '必填项',
       specialChar: '不可包含以下字符：` ~ ! @ # $ % ^ & * ( ) = + ; : \' " |, < > . / ? [ ]{ }',
       normalChar: '只可输入字母、数字和下划线',
@@ -120,7 +122,7 @@ export class RegExpUtil extends Utils {
       mac: 'MAC地址不正确',
     };
 
-    this.placeholder = {
+    this[this.placeholder] = {
       ip: '如:192.168.3.10',
       ipPort: '如:192.168.3.10:8080',
       ipRanges: '如:192.168.3.10-192.168.3.50',
@@ -138,50 +140,50 @@ export class RegExpUtil extends Utils {
   }
 
   isSpecialChar(v) {
-    return v.search(this.reg.specialChar) != -1;
+    return v.search(this[this.reg].specialChar) != -1;
   }
   isNormalChar(v) {
-    return this.reg.normalChar.test(v);
+    return this[this.reg].normalChar.test(v);
   }
   isInteger(v) {
-    return this.reg.integer.test(v);
+    return this[this.reg].integer.test(v);
   }
   isDecimals(v, n) {
-    return this.reg.decimals(n).test(v);
+    return this[this.reg].decimals(n).test(v);
   }
   isDecimalsNotZero(v, m, n) {
-    return this.reg.decimalsNotZero(m, n).test(v);
+    return this[this.reg].decimalsNotZero(m, n).test(v);
   }
   isEmail(v) {
-    return this.reg.email.test(v);
+    return this[this.reg].email.test(v);
   }
   isIdcard(v) {
-    return this.reg.idcard.test(v);
+    return this[this.reg].idcard.test(v);
   }
   isPhone(v) {
-    return this.reg.phone.test(v);
+    return this[this.reg].phone.test(v);
   }
   isPhoneAndTel(v) {//bug
-    return this.reg.phoneAndTel.test(v);
+    return this[this.reg].phoneAndTel.test(v);
   }
   isUrl(v) {
-    return new RegExp(this.reg.url).test(v);
+    return new RegExp(this[this.reg].url).test(v);
   }
   isIpv4(v) {
-    return this.reg.ipv4.test(v);
+    return this[this.reg].ipv4.test(v);
   }
   isIpv6(v) {
-    return new RegExp(this.reg.ipv6).test(v);
+    return new RegExp(this[this.reg].ipv6).test(v);
   }
   isPort(v) {
-    return new RegExp(this.reg.port).test(v);
+    return new RegExp(this[this.reg].port).test(v);
   }
   isMac(v) {
-    return this.reg.mac.test(v);
+    return this[this.reg].mac.test(v);
   }
   //字符长度
   bytelength(v, min, max) {
-    let cnStr = v.match(this.reg.doubleByte);
+    let cnStr = v.match(this[this.reg].doubleByte);
     let length = cnStr==null? v.length : v.length + cnStr.length;
     return min <= length && length <= max
   }

@@ -122,13 +122,6 @@ export class NumberUtil extends Utils {
 
   toFixed(num, s) {
     let times = Math.pow(10, s);
-    let des;
-    if(num>0){
-      des = parseInt(num * times + 0.5, 10) / times
-    }else{
-      des = parseInt(num * times - 0.5, 10) / times
-    }
-    
-    return des;
+    return num>0?parseInt(num * times + 0.5) / times : parseInt(num * times - 0.5) / times
    }
 }

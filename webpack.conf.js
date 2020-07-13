@@ -10,7 +10,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, "./dist/js"),
         filename: '[name].js',
-        library: '$$',
+        library: '$prime',
         libraryTarget: 'umd'
     },
     
