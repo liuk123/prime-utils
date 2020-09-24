@@ -6,23 +6,33 @@ export class FunctionUtil extends Utils {
     }
 
     /**
-   * 函数延迟
+   * 防抖 多次触发后只执行一次
    * @param callback 
    * @param time 
    */
     debounce(callback, time = 800) {
         let timer = null;
-        function wrapper(...args) {
-            let self = this;
-            function exec() {
-                callback.apply(self, args)
-            }
-            if (timer != null) {
-                clearTimeout(timer);
-            }
-            timer = setTimeout(exec, time);
+        return function (...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => { callback.apply(this, args) }, time);
         }
-        return wrapper;
+    }
+
+    /**
+     * 节流 多次触发，n秒内只执行一次，稀释函数的执行频率
+     * @param callback 
+     * @param time 
+     */
+    throttle(callback, time = 800) {
+        let flag = true;
+        return (...args) => {
+            if (!flag) return;
+            flag = false;
+            setTimeout(() => {
+                callback.apply(this, args);
+                flag = true;
+            }, time);
+        }
     }
 
     /**
